@@ -1,0 +1,21 @@
+export class Car {
+    name: String = ""
+    picture: String = ""
+    power: Number = 0
+    horses: Number = 0
+    kms: Number = 0
+    first_registration: String = ""
+    seating_places: Number = 0
+    doors: Number = 0
+    co2: Number = 0
+    price: Number = 0
+    fuel_id: Number = 0
+    ext_color_id: Number = 0
+    int_color_id: Number = 0
+    transmission_id: Number = 0
+    brand_id: Number = 0
+    model_id: Number = 0
+    state_id: Number = 0
+    chassis_id: Number = 0
+    equipment_id: Number = 0
+}

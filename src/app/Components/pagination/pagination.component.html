@@ -1,0 +1,18 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" (click)="handleSetPage('<<')">Previous</a></li>
+        
+        <li 
+            class="page-item" 
+            [ngClass]="{active: item==currentPage}" 
+            *ngFor="let item of items"
+        >
+            <a 
+                class="page-link" 
+                (click)="handleSetPage(item)"
+            >{{ item }}</a>
+        </li>   
+
+        <li class="page-item"><a class="page-link" (click)="handleSetPage('>>')">Next</a></li>
+    </ul>
+  </nav>

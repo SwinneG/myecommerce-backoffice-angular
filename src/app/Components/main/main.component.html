@@ -1,0 +1,86 @@
+
+
+<main class="main">
+    <h1>Page {{ pageName }}</h1>
+    <!-- {{ datas | json }} -->
+
+    <app-loading *ngIf="isLoading"/>
+
+    <div *ngIf="!isLoading">
+        <div class="table-container"  *ngIf="result?.total">
+
+            <p *ngIf="result?.total > 1">
+                <strong>{{ result?.total }}</strong> données retrouvées
+            </p>
+            <p *ngIf="result?.total === 1">
+                <strong>{{ result?.total }}</strong> donnée retrouvée
+            </p>
+
+            <table class="table shadow table-responsive">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        <input type="checkbox" name="" id="" class="form-check-input">
+                    </th>
+                    <th scope="col">N°</th>
+                    <th scope="col" *ngFor="let name of entityNames">{{ name | formatName }}</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of datas; let index = index">
+                    <td scope="row">
+                        <input type="checkbox" name="" id="" class="form-check-input">
+                    </td>
+                    <td scope="row">{{ result?.total - ((result.currentPage-1)*pageLimit) - index }}</td>
+                    <td *ngFor="let name of entityNames">{{ getValue(data, name) }}</td>
+                    <td>
+                        <a href="" class="btn btn-success m-1">
+                            <fa-icon [icon]="faEye"></fa-icon>
+                        </a>
+                        <a href="" class="btn btn-primary m-1">
+                            <fa-icon [icon]="faEdit"></fa-icon>
+                        </a>
+                        <a href="" class="btn btn-danger m-1">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end">
+                <div class="item-per-page">
+                    Item per Page
+                    <select name="pageLimit" id="pageLimit" (change)="setPageLimit($event)">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+
+            <app-pagination
+                [currentPage]="result.currentPage"
+                [total]="result.total"
+                [nextPage]="result.nextPage"
+                [previousPage]="result.previousPage"
+                [totalByPage]="pageLimit" 
+                [totalPages]="result.totalPages"
+                (pageSelected)="setPage($event)"
+            >
+            </app-pagination>
+        </div>
+        <div *ngIf="!datas.length">
+            <p>
+                Aucune donnée disponible
+            </p>
+            <a class="btn btn-success" routerlink="add">
+                <fa-icon [icon]="faPlus"></fa-icon>
+                Ajouter
+            </a>
+        </div>
+    </div>
+</main>

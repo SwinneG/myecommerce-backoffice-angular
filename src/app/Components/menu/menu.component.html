@@ -1,0 +1,10 @@
+<nav>
+    <ul>
+        <li *ngFor="let route of routes">
+            <a [routerLink]="['/', route.path]" routerLinkActive="active">
+                {{ route.name }}
+            </a>
+        </li>
+    </ul>
+</nav>
+
