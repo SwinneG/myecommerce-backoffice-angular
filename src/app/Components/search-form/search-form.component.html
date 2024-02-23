@@ -1,0 +1,14 @@
+<form action="" class="d-flex" (submit)="handleSubmit($event)">
+    <input 
+        type="search"
+        class="form-control"
+        [name]="name"
+        [(ngModel)]="value"
+        (search)="handleSubmit($event)"
+        placeholder="Tape your search..."
+        aria-label="search"
+    />
+    <button class="btn btn-success">
+        <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+    </button>
+</form>

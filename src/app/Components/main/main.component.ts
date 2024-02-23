@@ -22,6 +22,8 @@ export class MainComponent {
     entityNames: Array<string> = []
     entityNamesAll: Array<string> = []
     routes: Array<any> = routes
+    query: string = ""
+    searchTag: string = ""
 
     faEye = faEye
     faEdit = faEdit
@@ -80,23 +82,58 @@ export class MainComponent {
     }
 
     getDatasByPage() {
-        console.log(this.pagePath, this.pageNumber, this.pageLimit)
-        this.entityService.getDatasByPage(this.pagePath, this.pageNumber, this.pageLimit).subscribe({
-            next: (data: any) => {
-                // console.log(data)
-                const {isSuccess, results} = data
-                if(isSuccess && results) {
-                    this.isLoading = false
-                    this.datas = results?.rows
-                    console.log(this.datas)
-                    this.result = data
-                    // console.log(this.result)
-                } 
-            },
-            error: (error: any) => {
-                console.log(error)
-            }
-        })
+        if(this.searchTag) {
+            this.entityService.searchDatasByPage(this.pagePath, this.searchTag, this.pageNumber, this.pageLimit).subscribe({
+                next: (data: any) => {
+                    // console.log(data)
+                    const {isSuccess, results} = data
+                    if(isSuccess && results) {
+                        this.isLoading = false
+                        this.datas = results?.rows
+                        // console.log(this.datas)
+                        this.result = data
+                        // console.log(this.result)
+                    } 
+                },
+                error: (error: any) => {
+                    console.log(error)
+                }
+            })
+        }
+        else {
+            // console.log(this.pagePath, this.pageNumber, this.pageLimit)
+            this.entityService.getDatasByPage(this.pagePath, this.pageNumber, this.pageLimit).subscribe({
+                next: (data: any) => {
+                    // console.log(data)
+                    const {isSuccess, results} = data
+                    if(isSuccess && results) {
+                        this.isLoading = false
+                        this.datas = results?.rows
+                        // console.log(this.datas)
+                        this.result = data
+                        // console.log(this.result)
+                    } 
+                },
+                error: (error: any) => {
+                    console.log(error)
+                }
+            })
+        }
+       
+    }
+
+    searchData(data: any) {
+        this.query = ""
+        if(data) {
+            this.searchTag = data.value
+            console.log(this.searchTag)
+            this.query += data.name+"="+data.value
+            console.log(this.query)
+        }
+        // else {
+        //     this.query = ""
+        // }
+       this.getDatasByPage()
     }
 
     

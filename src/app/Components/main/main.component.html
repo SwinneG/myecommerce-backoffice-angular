@@ -7,6 +7,16 @@
     <app-loading *ngIf="isLoading"/>
 
     <div *ngIf="!isLoading">
+        
+        <app-search-form
+            *ngIf="datas.length || query"
+            [name]="entityNames[0]"
+            (newValue)="searchData($event)"
+        />
+        <div *ngIf="query">
+            {{ datas.length }} Résultat(s) de recherche avec le mot clé : <strong>{{ searchTag }}</strong>
+        </div>
+
         <div class="table-container"  *ngIf="result?.total">
 
             <p *ngIf="result?.total > 1">
@@ -33,7 +43,9 @@
                         <input type="checkbox" name="" id="" class="form-check-input">
                     </td>
                     <td scope="row">{{ result?.total - ((result.currentPage-1)*pageLimit) - index }}</td>
-                    <td *ngFor="let name of entityNames">{{ getValue(data, name) }}</td>
+                    <td *ngFor="let name of entityNames">
+                        <div [innerHTML]="getValue(data, name) | formatTag: searchTag"></div>
+                    </td>
                     <td>
                         <a href="" class="btn btn-success m-1">
                             <fa-icon [icon]="faEye"></fa-icon>
@@ -63,6 +75,7 @@
             </div>
 
             <app-pagination
+                *ngIf="datas.length"
                 [currentPage]="result.currentPage"
                 [total]="result.total"
                 [nextPage]="result.nextPage"
@@ -70,10 +83,10 @@
                 [totalByPage]="pageLimit" 
                 [totalPages]="result.totalPages"
                 (pageSelected)="setPage($event)"
-            >
-            </app-pagination>
+            />
         </div>
-        <div *ngIf="!datas.length">
+
+        <div *ngIf="!datas.length && !query">
             <p>
                 Aucune donnée disponible
             </p>
