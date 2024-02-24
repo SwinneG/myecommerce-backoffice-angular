@@ -26,6 +26,32 @@
                 <strong>{{ result?.total }}</strong> donnée retrouvée
             </p>
 
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-success">
+                    <fa-icon [icon]="faPlus"></fa-icon>
+                    Add New
+                </button>
+                <button class="btn btn-success" (click)="setDisplaySelectionBox()">
+                    <fa-icon [icon]="faLayerGroup"></fa-icon>
+                </button>
+                <div class="entityNames" *ngIf="displaySelectionBox">
+                    <ul>
+                        <li *ngFor="let entityName of entityNamesAll; let first = first">
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input" 
+                                [checked]="first || entityNames.includes(entityName)"
+                                [disabled]="first"
+                                (change)="setEntityNames($event, entityName)"
+                                name="" 
+                                id=""
+                            />
+                            {{ entityName | formatName }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <table class="table shadow table-responsive">
                 <thead>
                 <tr>
@@ -43,23 +69,29 @@
                         <input type="checkbox" name="" id="" class="form-check-input">
                     </td>
                     <td scope="row">{{ result?.total - ((result.currentPage-1)*pageLimit) - index }}</td>
-                    <td *ngFor="let name of entityNames">
-                        <div [innerHTML]="getValue(data, name) | formatTag: searchTag"></div>
+                    <td *ngFor="let name of entityNames" (click)="setImageView(name, data)">
+                        <div [innerHTML]="getValue(data, name) | formatTag: searchTag | formatvalue: [name, data]"></div>
                     </td>
                     <td>
-                        <a href="" class="btn btn-success m-1">
+                        <a [routerLink]="[data.id, 'view']" class="btn btn-success m-1">
                             <fa-icon [icon]="faEye"></fa-icon>
                         </a>
-                        <a href="" class="btn btn-primary m-1">
+                        <a [routerLink]="[data.id, 'edit']" class="btn btn-primary m-1">
                             <fa-icon [icon]="faEdit"></fa-icon>
                         </a>
-                        <a href="" class="btn btn-danger m-1">
+                        <a [routerLink]="[data.id, 'delete']" class="btn btn-danger m-1">
                             <fa-icon [icon]="faTrash"></fa-icon>
                         </a>
                     </td>
                 </tr>
                 </tbody>
             </table>
+
+            <app-image-preview
+                *ngIf="picture"
+                [src]="picture"
+                (closeModal)="setImageView(null, null)"
+            />
 
             <div class="d-flex justify-content-end">
                 <div class="item-per-page">

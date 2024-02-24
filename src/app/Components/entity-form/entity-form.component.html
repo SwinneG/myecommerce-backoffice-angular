@@ -1,0 +1,46 @@
+<form action="" [formGroup]="form">
+    <div class="form-inline"  *ngFor="let name of entityNames">
+        <label for="">
+            {{ name | formatName }} :
+        </label>
+
+        <!-- {{ name | formatType: data }} -->
+
+        <input 
+            *ngIf="(name | formatType: data) === 'INPUT'"
+            class="form-control"
+            type="text" 
+            name=""
+            [formControlName]="name" 
+            [value]="name | formatFormValue: data"
+        >
+
+        <select 
+            *ngIf="(name | formatType: data) === 'SELECT'"
+            [formControlName]="name" 
+            id=""
+            name=""
+        >
+            <option value="">Yes</option>
+            <option value="">No</option>
+        </select>
+
+        <div *ngIf="(name | formatType: data) === 'IMAGE'">
+            <app-image-view
+                [picture]="name | formatFormValue : data"
+            />
+        </div>
+
+        <div *ngIf="(name | formatType: data) === 'OPTION'">
+            <app-option-form
+                [options]="name | formatFormValue: data"
+            />
+        </div>
+
+    </div>
+
+    <div class="action">
+        <button class="btn btn-danger">Cancel</button>
+        <button class="btn btn-success" (click)="handleSubmit()">Update</button>
+    </div>
+</form>

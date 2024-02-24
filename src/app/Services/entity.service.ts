@@ -24,4 +24,8 @@ export class EntityService {
     return this.http.get(environment.apiUrl+entityName+"/search?query="+query+"&page="+pageNumber+"&size="+pageLimit)
   }
 
+  getDatasById(entityName: string, id: number) {
+    return this.http.get(environment.apiUrl+entityName+'/'+id)
+  }
+
 }

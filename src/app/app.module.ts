@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './Components/header/header.component';
@@ -14,9 +14,18 @@ import { LoadingComponent } from './Components/loading/loading.component';
 import { MainComponent } from './Components/main/main.component';
 import { PaginationComponent } from './Components/pagination/pagination.component';
 import { SearchFormComponent } from './Components/search-form/search-form.component';
+import { ImagePreviewComponent } from './Components/image-preview/image-preview.component';
+import { DataManagerComponent } from './Components/data-manager/data-manager.component';
+import { EntityFormComponent } from './Components/entity-form/entity-form.component';
 
 import { FormatNamePipe } from './Pipes/format-name.pipe';
 import { FormatTagPipe } from './Pipes/format-tag.pipe';
+import { FormatvaluePipe } from './Pipes/formatvalue.pipe';
+import { FormatFormValuePipe } from './Pipes/format-form-value.pipe';
+import { FormatTypePipe } from './Pipes/format-type.pipe';
+import { ImageViewComponent } from './Components/image-view/image-view.component';
+import { OptionFormComponent } from './Components/option-form/option-form.component';
+
 
 @NgModule({
   declarations: [
@@ -29,15 +38,24 @@ import { FormatTagPipe } from './Pipes/format-tag.pipe';
     MainComponent,
     PaginationComponent,
     SearchFormComponent,
+    ImagePreviewComponent,
+    DataManagerComponent,
+    EntityFormComponent,
     FormatNamePipe,
-    FormatTagPipe
+    FormatTagPipe,
+    FormatvaluePipe,
+    FormatFormValuePipe,
+    FormatTypePipe,
+    ImageViewComponent,
+    OptionFormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

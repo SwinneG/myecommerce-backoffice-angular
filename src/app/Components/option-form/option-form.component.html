@@ -1,0 +1,22 @@
+<!-- {{ options }} -->
+
+<div class="option_container">
+    <div *ngFor="let option of options">
+        <div class="d-flex align-items-center gap-2">
+            <strong>Name</strong>
+            <input 
+                type="text"
+                id=""
+                [value]="option.name"
+            >
+        </div>
+        <div class="d-flex align-items-center gap-2"></div>
+        <div class="d-flex align-items-center gap-2"></div>
+    </div>
+</div>
+
+<div class="d-flex">
+    <button class="btn btn-success" (click)="addOption()">
+        Add new option
+    </button>
+</div>
