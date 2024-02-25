@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { lastValueFrom } from 'rxjs';
+import { EntityService } from 'src/app/Services/entity.service';
 
 @Component({
   selector: 'app-entity-form',
@@ -8,18 +10,25 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class EntityFormComponent {
 
-    @Input() entityNames: Array<string> = [];
-    @Input() data: any;
+    @Input() entityNames: Array<string> = []
+    @Input() data: any
+    @Input() formType: any
+    @Input() entity: any
 
-    @Output() formEmit = new EventEmitter<any>();
+    @Output() formEmit = new EventEmitter<any>()
 
     form: any;
+    formData: any = {}
+    categories: any
+    categoriesSelected: any
+    files: any
 
     constructor(
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private entityService: EntityService
     ) {}
 
-    ngOnInit() {
+    async ngOnInit() {
         // console.log(this.entityNames)
         // console.log(this.data)
 
@@ -30,6 +39,14 @@ export class EntityFormComponent {
         //     }
         //     return true
         // })
+
+        // EXEMPLE: categories
+        if(this.entityNames.includes("categories")) {
+            const data: any = await lastValueFrom(this.entityService.getDatas("category"))
+            this.categoriesSelected = this.data["categories"]
+            this.categories = data.results
+        }
+        // console.log({categories: this.categories})
 
         this.initForm()
     }
@@ -47,9 +64,55 @@ export class EntityFormComponent {
         this.form = this.fb.group(formObject)
     }
 
+    initSelect() {
+        const WD: any = window;
+        const $ = WD.query;
+        const self = this;
+
+        $(document).ready(function() {
+            $('.select-categories').select2()
+            $('.select-categories').on('select2:select', function(event: any){
+                const values = $('.select-categories').select2('val')
+                // console.log(values)
+                self.formData["categories"] = values
+            })
+            $('.select-categories').on('select2:unselect', function(event: any){
+                const values = $('.select-categories').select2('val')
+                self.formData['categories'] = values
+            })
+
+            $('.single-select').select2()
+            $('single-select').on('select2:select', function(event: any){
+                const {name, value} = event.target;
+                // console.log({name, value})
+                self.formData[name] = value
+            })
+        })
+    }
+
     handleSubmit() {
         // console.log(this.form.value)
-        this.formEmit.emit({type: 'NORMAL', form: this.form.value})
+        // console.log(this.formData)
+        const data = {...this.form.value, ...this.formData}
+        if(this.files) {
+            data['files'] = this.files
+        }
+        this.formEmit.emit({...data})
+    }
+
+    handleUpdateOption(data: any){
+        console.log(data)
+        this.formData['options'] = data
+        console.log(this.formData)
+    }
+
+    handleChangeCategory(event: any) {
+        const {name, value} = event.target
+        console.log({name, value})
+    }
+
+    handleChangeFile(files: any) {
+        this.files = files
     }
 
 }

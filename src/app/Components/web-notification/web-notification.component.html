@@ -1,0 +1,4 @@
+<div class="alert alert-{{notification.status}}" role="alert" *ngIf="notification?.message">
+    <span class="btn-close" (click)="closeNotif(notification.id)"></span>
+    <div [innerHTML]="notification?.message"></div>
+</div>

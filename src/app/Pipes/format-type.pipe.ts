@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 enum Type {
     INPUT = "INPUT",
     SELECT = "SELECT",
+    SELECT_CATEGORIES = "SELECT_CATEGORIES",
     TEXT = "TEXT",
     IMAGE = "IMAGE",
     OPTION = "OPTION"
@@ -32,6 +33,11 @@ export class FormatTypePipe implements PipeTransform {
     if(name === "fuel_id") {
         type = Type.OPTION
     }
+
+    //EXEMPLE CATEGORIES:
+    if(name === 'categories') {
+        type = Type.SELECT_CATEGORIES
+    }   
     
     return type;
   }

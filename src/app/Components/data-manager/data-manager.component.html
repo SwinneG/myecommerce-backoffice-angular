@@ -9,9 +9,11 @@
     </ul>
 
     <app-entity-form
-        *ngIf="action=='edit'"
+        *ngIf="action=='edit' || action=='add'"
         [entityNames]="entityNamesAll"
         [data]="data"
+        [entity]="entity"
+        [formType]="action"
         (formEmit)="handleFormChange($event)"
     />
 </div>

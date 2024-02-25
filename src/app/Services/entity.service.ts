@@ -28,4 +28,16 @@ export class EntityService {
     return this.http.get(environment.apiUrl+entityName+'/'+id)
   }
 
+  updateData(entityName: string, entityId: number, data: any) {
+    return this.http.put(environment.apiUrl+entityName+'/'+entityId, data)
+  }
+
+  addData(entityName: string, data: any){
+    return this.http.post(environment.apiUrl+entityName, data)
+  }
+
+  deleteData(entityName: string, entityId: number) {
+    return this.http.delete(environment.apiUrl+entityName+'/'+entityId)
+  }
+
 }

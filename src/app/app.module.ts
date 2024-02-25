@@ -25,6 +25,8 @@ import { FormatFormValuePipe } from './Pipes/format-form-value.pipe';
 import { FormatTypePipe } from './Pipes/format-type.pipe';
 import { ImageViewComponent } from './Components/image-view/image-view.component';
 import { OptionFormComponent } from './Components/option-form/option-form.component';
+import { WebNotificationComponent } from './Components/web-notification/web-notification.component';
+import { ModalComponent } from './Components/modal/modal.component';
 
 
 @NgModule({
@@ -48,6 +50,8 @@ import { OptionFormComponent } from './Components/option-form/option-form.compon
     FormatTypePipe,
     ImageViewComponent,
     OptionFormComponent,
+    WebNotificationComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

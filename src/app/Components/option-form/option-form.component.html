@@ -8,10 +8,33 @@
                 type="text"
                 id=""
                 [value]="option.name"
+                (keyup)="updateOption($event, option.id)"
             >
+            <button class="btn btn-danger" (click)="removeOption(option.id)">
+                Delete
+                <!-- <fa-icon [icon]="faTrash"></fa-icon> -->
+            </button>
         </div>
-        <div class="d-flex align-items-center gap-2"></div>
-        <div class="d-flex align-items-center gap-2"></div>
+        <!-- <div class="d-flex align-items-center gap-2">
+            <strong>Value {{ index + 1 }}</strong>
+            <input 
+                type="text"
+                class="form-control"
+                [value]="value.name"
+                (keyup)="updateOptionValue($event, option.id, value.id)"
+                id=""
+            >
+            <button class="btn btn-danger" (click)="removeOptionValue(option.id)">
+                Delete
+            </button>
+        </div> -->
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-primary" (click)="addOptionValue(option.id)">
+                Add new value
+                <!-- <fa-icon [icon]="faPlus"></fa-icon> -->
+            </button>
+        </div>
+        
     </div>
 </div>
 

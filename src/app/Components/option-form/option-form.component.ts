@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { generateId } from 'src/app/Helpers/helpers';
 
 @Component({
@@ -8,13 +8,15 @@ import { generateId } from 'src/app/Helpers/helpers';
 })
 export class OptionFormComponent {
 
-    @Input() options: any = []
+    @Input() options: any;
+
+    @Output() emitOption = new EventEmitter<any>()
 
     constructor() {}
 
     ngOnInit() {
         this.options = this.options ? this.options : []
-        console.log(this.options)
+        // console.log(this.options)
     }
 
     addOption() {
@@ -29,6 +31,61 @@ export class OptionFormComponent {
                 }
             ]
         })
+    }
+
+    addOptionValue(optionId: string) {
+        this.options = this.options.map((option: any) => {
+            if(option.id === optionId) {
+                this.options.values.push({
+                    id: generateId(),
+                    value: "Option value"
+                })
+            }
+            return option
+        })
+    }
+
+    removeOption(optionId: string) {
+        this.options = this.options.filter((option: any) => option.id !== optionId)
+    }
+
+    removeOptionValue(optionId: string, valueId: string) {
+        this.options = this.options.map((option: any) => {
+            if(option.id === optionId) {
+                option.values = option.values.filter((item: any) => item.id !== valueId)
+            }
+            return option
+        })
+        this.emitOption.emit(this.options)
+    }
+
+    updateOption(event: any, optionId: string) {
+        const {value} = event.target
+        this.options = this.options.map((option: any) => {
+            if(option.id === optionId) {
+                option.name = value
+            }
+            return option
+        })
+        // console.log(this.options)
+        this.emitOption.emit(this.options)
+    }
+
+    updateOptionValue(event: any, optionId: string, valueId: string) {
+        const {value} = event.target
+        this.options = this.options.map((option: any) => {
+            if(option.id === optionId) {
+                option.values = option.values.map((valueItem: any) => {
+                    if(valueItem.id === valueId) {
+                        valueItem.name = value
+                    }
+                    return valueItem
+                })
+            }
+            return option
+        })
+        // console.log(this.options)
+        this.emitOption.emit(this.options)
     }
 
 }
