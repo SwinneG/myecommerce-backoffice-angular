@@ -1,10 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ChildActivationEnd } from '@angular/router';
 import { getEntityProperties } from 'src/app/Helpers/helpers';
 import { EntityService } from 'src/app/Services/entity.service';
 import { faEye, faEdit, faTrash, faPlus, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'src/app/Helpers/route'
 import { Subscription, lastValueFrom } from 'rxjs';
+import { compileNgModule } from '@angular/compiler';
  
 @Component({
   selector: 'app-main',
@@ -85,7 +86,6 @@ export class MainComponent implements OnDestroy{
             this.pageLimit = parseInt(value)
             this.getDatas()
         }
-
     }
 
     getDatas() {
@@ -94,8 +94,27 @@ export class MainComponent implements OnDestroy{
                 const {isSuccess, results} = data
                 if(isSuccess && results) {
                     this.isLoading = false
-                    this.datas = results?.rows
-                    this.result = data
+                   
+                    //when not available in API:
+                   /* if(this.entity === "cars") {
+                        this.datas = results?.rows
+
+                        //Fuels request
+                        const uniqueFuelIds = [...new Set(this.datas.map((car: any) => car.fuelId))];
+                        uniqueFuelIds.forEach((id: any) => {
+                            this.entityService.getDatasById('fuels', id).subscribe((fuel:any) => {
+                                fuel = fuel.data
+                                this.datas.filter((car:any) => car.fuelId === id).forEach((car:any) => car.fuel = fuel.name);
+                            });
+                        });
+
+                        this.result = data
+                    }*/
+                    //else {
+                        this.datas = results?.rows
+                        this.result = data
+                        console.log(this.datas)
+                   // }
                 } 
             },
             error: (error: any) => {
@@ -110,7 +129,7 @@ export class MainComponent implements OnDestroy{
             this.searchTag = data.value
             this.query += data.name+"="+data.value
         }
-       this.getDatas()
+        this.getDatas()
     }
 
     setDisplaySelectionBox() {
@@ -151,7 +170,6 @@ export class MainComponent implements OnDestroy{
             if(picturesArray){
                 this.pictures = picturesArray
             }
-            // console.log(this.pictures)
         }
         else {
             this.pictures = null
@@ -173,7 +191,6 @@ export class MainComponent implements OnDestroy{
     }
 
     handleDelete(data: any) {
-        console.log(data)
         const index: any = this.entityNames[0]
         if(data){
             const name = data[index]
@@ -211,7 +228,6 @@ export class MainComponent implements OnDestroy{
     async handleConfirmModal(event: any) {
 
         if(this.entityDelete) {
-            console.log(this.entityDelete)
             this.entityService.deleteData(this.entity, this.entityDelete.id).subscribe({
                 next: (value: any)  => {
                     this.getDatas()

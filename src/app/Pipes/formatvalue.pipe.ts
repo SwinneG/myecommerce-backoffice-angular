@@ -38,14 +38,15 @@ export class FormatvaluePipe implements PipeTransform {
         }
         
     }
-    // if(name == 'regular_price') {
-    //     const currency = '€';
-    //     newValue = value + currency
-    // }
-    // if(name == 'fuels') {
-    //     const obj = value;
-    //     newValue = obj.name
-    // }
+    
+    if(name == 'fuel' || name == 'extcolor' || name == 'intcolor' || name == 'transmission' || name == 'brand' || name == 'model' || name == 'state' || name == 'chassis' || name == 'equipment' || name == 'equipmentCategory') {
+        const obj = value;
+        newValue = obj.name
+    }
+    if(name == 'user') {
+        const obj = value;
+        newValue = obj.username
+    }
 
     return newValue;
   }
