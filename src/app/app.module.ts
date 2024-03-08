@@ -17,16 +17,17 @@ import { SearchFormComponent } from './Components/search-form/search-form.compon
 import { ImagePreviewComponent } from './Components/image-preview/image-preview.component';
 import { DataManagerComponent } from './Components/data-manager/data-manager.component';
 import { EntityFormComponent } from './Components/entity-form/entity-form.component';
-
-import { FormatNamePipe } from './Pipes/format-name.pipe';
-import { FormatTagPipe } from './Pipes/format-tag.pipe';
-import { FormatvaluePipe } from './Pipes/formatvalue.pipe';
-import { FormatFormValuePipe } from './Pipes/format-form-value.pipe';
-import { FormatTypePipe } from './Pipes/format-type.pipe';
 import { ImageViewComponent } from './Components/image-view/image-view.component';
 import { OptionFormComponent } from './Components/option-form/option-form.component';
 import { WebNotificationComponent } from './Components/web-notification/web-notification.component';
 import { ModalComponent } from './Components/modal/modal.component';
+
+import { FormatNamePipe } from './Pipes/format-name.pipe';
+import { FormatTagPipe } from './Pipes/format-search-tag.pipe';
+import { FormatvaluePipe } from './Pipes/formatvalue.pipe';
+import { FormatFormValuePipe } from './Pipes/format-form-value.pipe';
+import { FormatTypePipe } from './Pipes/format-type.pipe';
+
 
 
 @NgModule({
@@ -43,15 +44,15 @@ import { ModalComponent } from './Components/modal/modal.component';
     ImagePreviewComponent,
     DataManagerComponent,
     EntityFormComponent,
+    ImageViewComponent,
+    OptionFormComponent,
+    WebNotificationComponent,
+    ModalComponent,
     FormatNamePipe,
     FormatTagPipe,
     FormatvaluePipe,
     FormatFormValuePipe,
     FormatTypePipe,
-    ImageViewComponent,
-    OptionFormComponent,
-    WebNotificationComponent,
-    ModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ModalComponent {
     
-    
+    // @Input() entityDelete: any
     @Input() modalTitle: string = ""
     @Input() modalContent: string = ""
     @Input() entityData: any
@@ -19,7 +19,11 @@ export class ModalComponent {
 
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        const WT: any = window
+        this.myModal = new WT['bootstrap'].Modal('#deleteModal', {keyboard: false})
+        this.myModal.show()
+    }
 
     handleCloseModal() {
         this.myModal.hide()

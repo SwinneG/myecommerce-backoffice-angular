@@ -26,15 +26,14 @@ export class MainComponent implements OnDestroy{
     query: string = ""
     searchTag: string = ""
     displaySelectionBox: boolean = false
-    picture: string|null = null
+    pictures: any|null = null
     entityDelete: any
     isDeleting: boolean = false
     modalTitle: string = ""
     modalContent: string = ""
     group: Array<string> = []
 
-    searchDatasByPage$ = new Subscription()
-    getDatasByPage$ = new Subscription()
+    getDatas$ = new Subscription()
 
     faEye = faEye
     faEdit = faEdit
@@ -49,30 +48,24 @@ export class MainComponent implements OnDestroy{
 
     ngOnInit(){
         this.initComp()
-        this.getDatasByPage()
+        this.getDatas()
     }
 
     ngOnDestroy(): void {
-        this.searchDatasByPage$.unsubscribe()
-        this.getDatasByPage$.unsubscribe()
+        this.getDatas$.unsubscribe()
     }
 
     initComp() {
-         // console.log(this.route.snapshot)
-         this.entity = this.route.snapshot.url[0]?.path || "cars";
+         this.entity = this.route.snapshot.url[0]?.path;
 
          const routeObject: any = this.routes.filter(route => route.path === this.entity)
-        //  console.log(routeObject)
          if(routeObject[0]) {
              this.pageName = routeObject[0]?.name
          }
          
         this.entityNamesAll = getEntityProperties(this.entity)
-        // console.log(entityNamesAll)
         const localData = this.getLocalData(this.entity)
-        // console.log({localData})
         this.entityNames = localData ? localData ?.entityNames : [this.entityNamesAll[0]]
-        // console.log(this.entityNames)
     }
 
     getValue(data: any, name: string) {
@@ -81,75 +74,43 @@ export class MainComponent implements OnDestroy{
     }
 
     setPage(page:number) {
-        // console.log({setPage: page})
         this.pageNumber = page
-        this.getDatasByPage()
+        this.getDatas()
     }
 
     setPageLimit(event: any) {
-        // console.log(event.target)
         const {value} = event.target
-        // console.log(value)
         const pageLimit = parseInt(value)
-        // console.log(pageLimit)
         if(!isNaN(pageLimit)){
             this.pageLimit = parseInt(value)
-            // console.log(this.pageLimit)
-            this.getDatasByPage()
+            this.getDatas()
         }
 
     }
 
-    getDatasByPage() {
-        if(this.searchTag) {
-            this.searchDatasByPage$ = this.entityService.searchDatasByPage(this.entity, this.searchTag, this.pageNumber, this.pageLimit).subscribe({
-                next: (data: any) => {
-                    // console.log(data)
-                    const {isSuccess, results} = data
-                    if(isSuccess && results) {
-                        this.isLoading = false
-                        this.datas = results?.rows
-                        // console.log(this.datas)
-                        this.result = data
-                        // console.log(this.result)
-                    } 
-                },
-                error: (error: any) => {
-                    console.log(error)
-                }
-            })
-        }
-        else {
-            // console.log(this.pagePath, this.pageNumber, this.pageLimit)
-            this.getDatasByPage$ = this.entityService.getDatasByPage(this.entity, this.pageNumber, this.pageLimit).subscribe({
-                next: (data: any) => {
-                    // console.log(data)
-                    const {isSuccess, results} = data
-                    if(isSuccess && results) {
-                        this.isLoading = false
-                        this.datas = results?.rows
-                        // console.log(this.datas)
-                        this.result = data
-                        // console.log(this.result)
-                    } 
-                },
-                error: (error: any) => {
-                    console.log(error)
-                }
-            })
-        }
-       
+    getDatas() {
+        this.getDatas$ = this.entityService.getDatas(this.entity, this.searchTag, this.pageNumber, this.pageLimit).subscribe({
+            next: (data: any) => {
+                const {isSuccess, results} = data
+                if(isSuccess && results) {
+                    this.isLoading = false
+                    this.datas = results?.rows
+                    this.result = data
+                } 
+            },
+            error: (error: any) => {
+                console.log(error)
+            }
+        })
     }
 
     searchData(data: any) {
         this.query = ""
         if(data) {
             this.searchTag = data.value
-            // console.log(this.searchTag)
             this.query += data.name+"="+data.value
-            // console.log(this.query)
         }
-       this.getDatasByPage()
+       this.getDatas()
     }
 
     setDisplaySelectionBox() {
@@ -158,7 +119,6 @@ export class MainComponent implements OnDestroy{
 
     setEntityNames(event: any, name: string) {
         const {checked} = event.target
-        // console.log({checked, name})
 
         if(checked) {
             if(!this.entityNames.includes(name)) {
@@ -179,19 +139,24 @@ export class MainComponent implements OnDestroy{
     }
 
     setImageView(name: any, data: any) {
-        // console.log(name)
 
         if(!name && !data) {
-            this.picture = null
+            this.pictures = null
         }
 
-        if(name === "picture") {
-            this.picture = data['picture']
+        if(name === "pictures") {
+            this.pictures = data['pictures']
+
+            let picturesArray = this.pictures?.split(';')
+            if(picturesArray){
+                this.pictures = picturesArray
+            }
+            // console.log(this.pictures)
         }
         else {
-            this.picture = null
+            this.pictures = null
         }
-        // console.log(this.picture)
+        
     }
 
     saveLocalData(key: string, value: string) {
@@ -208,6 +173,7 @@ export class MainComponent implements OnDestroy{
     }
 
     handleDelete(data: any) {
+        console.log(data)
         const index: any = this.entityNames[0]
         if(data){
             const name = data[index]
@@ -245,10 +211,10 @@ export class MainComponent implements OnDestroy{
     async handleConfirmModal(event: any) {
 
         if(this.entityDelete) {
+            console.log(this.entityDelete)
             this.entityService.deleteData(this.entity, this.entityDelete.id).subscribe({
                 next: (value: any)  => {
-                    console.log(value)
-                    this.getDatasByPage()
+                    this.getDatas()
                 },
                 error: (error: any) => {
                     console.log(error)
@@ -266,10 +232,9 @@ export class MainComponent implements OnDestroy{
                     await lastValueFrom(this.entityService.deleteData(this.entity, id))
                 }))
                 this.group = []
-                this.getDatasByPage()
+                this.getDatas()
             }
         }
-        
 
         this.isDeleting = false
         this.entityDelete = null
@@ -280,31 +245,27 @@ export class MainComponent implements OnDestroy{
         const { checked } = event.target
 
         if(checked) {
-            //coché
+            //checked
             if(!this.group.includes(id)) {
                 this.group.push(id)
             }
         }
         else {
-            //décoché
+            //unchecked
             this.group = this.group.filter((item: string) => item !== id)
         }
-
-        console.log({checked, id})
     }
 
     groupAll(event: any) {
         const { checked } = event.target
 
         if(checked) {
-            //coché
+            //checked
             this.group = this.datas.map((data:any) => data.id)
         }
         else {
-            //décoché
+            //unchecked
             this.group = []
         }
-
-        console.log(this.group)
     }
 }

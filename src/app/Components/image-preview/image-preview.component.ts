@@ -7,13 +7,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ImagePreviewComponent {
 
-    @Input() src: string = ""
+    @Input() src: any 
     @Output() closeModal = new EventEmitter<any>()
     myModal: any
 
     constructor() {}
 
     ngOnInit() {
+        console.log(this.src)
         const WT: any = window
         this.myModal = new WT['bootstrap'].Modal('#imagePreview', {keyboard: false})
         this.myModal.show()

@@ -15,7 +15,51 @@ const routes: Routes = [
         component: MainComponent
     },
     {
+        path: "fuels",
+        component: MainComponent
+    },
+    {
+        path: "extcolors",
+        component: MainComponent
+    },
+    {
+        path: "intcolors",
+        component: MainComponent
+    },
+    {
+        path: "transmissions",
+        component: MainComponent
+    },
+    {
+        path: "brands",
+        component: MainComponent
+    },
+    {
+        path: "models",
+        component: MainComponent
+    },
+    {
+        path: "states",
+        component: MainComponent
+    },
+    {
+        path: "chassis",
+        component: MainComponent
+    },
+    {
+        path: "equipments",
+        component: MainComponent
+    },
+    {
+        path: "equipmentCategories",
+        component: MainComponent
+    },
+    {
         path: ":entity/:id/:action",
+        component: DataManagerComponent
+    },
+    {
+        path: ":entity/:action",
         component: DataManagerComponent
     },
     {

@@ -36,22 +36,19 @@ export class DataManagerComponent implements OnDestroy{
 
     ngOnInit() {
         window.scrollTo(0,0)
-        // console.log(this.route.snapshot.url)
         const urls = this.route.snapshot.url
         if(urls.length < 2) {
             this.router.navigate(['/error'])
         }
-        if(urls.length == 3){
+        if(urls.length == 3){ //view, edit
             this.entity = urls[0]?.path 
             this.entityId = urls[1].path
             this.action = urls[2].path
         }
-        else if(urls.length == 2) {
+        if(urls.length == 2) { //add, delete
             this.entity = urls[0]?.path 
             this.action = urls[1].path
         }
-
-        // console.log(this.entity, this.entityId, this.action)
 
         const isEntityExist = routes.filter(route => {
             return route.path === this.entity
@@ -68,8 +65,6 @@ export class DataManagerComponent implements OnDestroy{
         if(routeObject[0]) {
             this.pageName = formatToCamelCase(this.action)+" "+routeObject[0]?.single
         }
-        // console.log(this.entity, this.entityId, this.action)
-        console.log({pagename : this.pageName})
 
         this.entityNamesAll = getEntityProperties(this.entity)
 
@@ -78,7 +73,6 @@ export class DataManagerComponent implements OnDestroy{
         }
         else if (this.action == 'add') {
             this.data = getEntity(this.entity)
-            console.log(this.data)
         }
         
     }
@@ -90,10 +84,8 @@ export class DataManagerComponent implements OnDestroy{
     getDatasById() {
         this.getDataById$ = this.entityService.getDatasById(this.entity, this.entityId).subscribe({
             next: (value: any) => {
-                // console.log(value)
                 this.result = value 
                 this.data = value.data
-                // console.log(this.data)
             },
             error: (error: any) => {
                 console.log(error)
@@ -102,12 +94,10 @@ export class DataManagerComponent implements OnDestroy{
     }
 
     getValue(name: any) {
-        // console.log(this.data)
         return this.data[name]
     }
 
     handleFormChange(data: any) {
-        // console.log(data)
         let formData: any = {}
         if(data?.files && !data?.files.length) {
             //upload file
@@ -136,11 +126,9 @@ export class DataManagerComponent implements OnDestroy{
 
         //SAVE DATA
         if(formData) {
-            // console.log(formData)
             if(this.action === 'edit'){
                 this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
                     next: (value: any) => {
-                        // console.log(value)
                         const message = "Update success"
                         const status = "success"
                         this.notificationService.emitNotification({message, status})
@@ -155,7 +143,6 @@ export class DataManagerComponent implements OnDestroy{
             else if(this.action === 'add') {
                 this.entityService.addData(this.entity, formData).subscribe({
                     next: (value: any) => {
-                        // console.log(value)
                         const message = "Add success"
                         const status = "success"
                         this.notificationService.emitNotification({message, status})
@@ -167,6 +154,7 @@ export class DataManagerComponent implements OnDestroy{
                     }
                 })
             }
+           
         }
     }
 }

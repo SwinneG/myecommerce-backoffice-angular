@@ -1,4 +1,4 @@
-import { FormatTagPipe } from './format-tag.pipe';
+import { FormatTagPipe } from './format-search-tag.pipe';
 
 describe('FormatTagPipe', () => {
   it('create an instance', () => {

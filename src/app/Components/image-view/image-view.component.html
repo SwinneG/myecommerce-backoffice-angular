@@ -1,13 +1,13 @@
-<!-- {{ picture | json }} -->
+<!-- {{ pictures | json }} -->
 
 <div class="row">
 
     <div class="col-md-4" *ngFor="let item of availableFiles">
         <div class="image-item" *ngIf="item.action !=='DELETE'">
-            <img [src]="item.imageUrl" alt="" (click)="setImageView(item.imageUrl)">
+            <img [src]="item.imageUrl" alt="" (click)="setImageView(item.imageUrl)" width="100%">
             <div>
-                <button class="btn btn-success" (click)="updateImage(item.imageUrl)">Changer</button>
-                <button class="btn btn-danger" (click)="removeImage(item.imageUrl)">Supprimer</button>
+                <button class="btn btn-success" (click)="updateImage(item.imageUrl)">Edit</button>
+                <button class="btn btn-danger" (click)="removeImage(item.imageUrl)">Delete</button>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
     <div class="col-md-4">
         <input type="file" name="file" id="file" class="none" (change)="addFile($event)" [multiple]="true">
         <button class="btn btn-success">
-            Ajouter image
+            Add image
         </button>
         {{errorMessage}}
     </div>

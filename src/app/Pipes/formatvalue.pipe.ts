@@ -1,25 +1,51 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Pipe({
   name: 'formatvalue'
 })
 export class FormatvaluePipe implements PipeTransform {
 
+    constructor(
+        private route: ActivatedRoute
+    ) {}
+
   transform(value: any, args: Array<any>): unknown {
 
     let newValue = value
     let name = args[0]
-    let data = args[1]
+    // let data = args[1]
 
-    if(name == 'picture') {
-        // console.log(value)
-        const url = value
-        newValue = `<img src='${url}' width='50' height='50'>`
+    const url = this.route.snapshot.url
+    let action =""
+    if(url[2]){ //view
+        action = url[2]?.path
     }
-    if(name == 'price') {
-        const currency = '€';
-        newValue = value + currency
+
+    if(name == 'pictures') {
+        const urlsArray = value.split(';');
+       
+        if(action=="view"){
+            const newArray = urlsArray.map((item: string) => {
+                return `<div class="col-md-4"><img src='${item}' width='100%'></div>`
+            }).join('')
+            newValue = `<div class="row">`
+            newValue += newArray
+            newValue += `</div>`
+        }
+        else {
+            newValue = `<img src='${urlsArray[0]}' width='100%'>`
+        }
+        
     }
+    // if(name == 'regular_price') {
+    //     const currency = '€';
+    //     newValue = value + currency
+    // }
+    // if(name == 'fuels') {
+    //     const obj = value;
+    //     newValue = obj.name
+    // }
 
     return newValue;
   }

@@ -25,19 +25,19 @@ export class FormatTypePipe implements PipeTransform {
     //     type = Type.SELECT
     // }
 
-    if(name === "picture") {
+    if(name === "pictures") {
         type = Type.IMAGE
     }
 
     //EXEMPLE OPTIONS:
-    if(name === "fuel_id") {
-        type = Type.OPTION
-    }
+    // if(name === "fuelId") {
+    //     type = Type.OPTION
+    // }
 
     //EXEMPLE CATEGORIES:
-    if(name === 'categories') {
-        type = Type.SELECT_CATEGORIES
-    }   
+    // if(name === 'categories') {
+    //     type = Type.SELECT_CATEGORIES
+    // }   
     
     return type;
   }

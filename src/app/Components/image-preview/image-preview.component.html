@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <img [src]="src" alt="">
+          <img *ngFor="let item of src" [src]="item" alt="" width="100%">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="handleCloseModal()">Close</button>

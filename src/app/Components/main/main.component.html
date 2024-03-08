@@ -1,7 +1,7 @@
 
 
 <main class="main">
-    <h1>Page {{ pageName }}</h1>
+    <h1>All {{ pageName }}</h1>
     <!-- {{ datas | json }} -->
 
     <app-loading *ngIf="isLoading"/>
@@ -14,28 +14,27 @@
             (newValue)="searchData($event)"
         />
         <div *ngIf="query">
-            {{ datas.length }} Résultat(s) de recherche avec le mot clé : <strong>{{ searchTag }}</strong>
+            {{ datas.length }} Search result(s) with the keyword: <strong>{{ searchTag }}</strong>
         </div>
 
         <div class="table-container"  *ngIf="result?.total">
 
             <p *ngIf="result?.total > 1">
-                <strong>{{ result?.total }}</strong> données retrouvées
+                <strong>{{ result?.total }}</strong> datas found
             </p>
             <p *ngIf="result?.total === 1">
-                <strong>{{ result?.total }}</strong> donnée retrouvée
+                <strong>{{ result?.total }}</strong> data found
             </p>
 
             <div class="d-flex justify-content-end" [ngClass]="{
                 'justify-content-end': !group.length,
                 'justify-content-between': group.length
             }">
-                <a class="btn btn-danger" [routerLink]="['/',entity, 'add']" *ngIf="group.length" (click)="handleDelete(null)">
-                    <!-- On met null car on ne veut pas passer une data en particulier mais toutes les datas -->
+                <a class="btn btn-danger" *ngIf="group.length" (click)="handleDelete(null)">
                     <fa-icon [icon]="faTrash"></fa-icon>
                     Delete {{ group.length }} item(s)
                 </a>
-                <a class="btn btn-success" [routerLink]="['/',entity, 'add']">
+                <a class="btn btn-success" [routerLink]="['/', entity, 'add']">
                     <fa-icon [icon]="faPlus"></fa-icon>
                     Add New
                 </a>
@@ -89,7 +88,9 @@
                                 (change)="handleGroup($event, data.id)"
                             >
                         </td>
-                        <td scope="row">{{ result?.total - ((result.currentPage-1)*pageLimit) - index }}</td>
+                        <td scope="row">
+                            {{ result?.total - ((result.currentPage-1)*pageLimit) - index }}
+                        </td>
                         <td *ngFor="let name of entityNames" (click)="setImageView(name, data)">
                             <div [innerHTML]="getValue(data, name) | formatTag: searchTag | formatvalue: [name, data]"></div>
                         </td>
@@ -109,8 +110,8 @@
             </table>
 
             <app-image-preview
-                *ngIf="picture"
-                [src]="picture"
+                *ngIf="pictures"
+                [src]="pictures"
                 (closeModal)="setImageView(null, null)"
             />
 
@@ -141,11 +142,11 @@
 
         <div *ngIf="!datas.length && !query">
             <p>
-                Aucune donnée disponible
+                No data available
             </p>
             <a class="btn btn-success" routerlink="add">
                 <fa-icon [icon]="faPlus"></fa-icon>
-                Ajouter
+                Add
             </a>
         </div>
     </div>
@@ -158,4 +159,5 @@
         (closeModal)="handleCloseModal($event)"
         (confirmAction)="handleConfirmModal($event)"
     />
+   
 </main>

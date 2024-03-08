@@ -21,14 +21,18 @@ export class ImageViewComponent {
     constructor() {}
 
     ngOnInit() {
-        this.files = this.pictures.map((imageUrl: string) => {
-            return {
-                imageUrl: imageUrl,
-                oldImage: imageUrl,
-                action: 'OLD'
-            }
-        }) 
-        this.updateFile()
+        let picturesArray = this.pictures.split(';')
+        if(picturesArray[0] !==''){
+            this.files = picturesArray.map((imageUrl: string) => {
+                return {
+                    imageUrl: imageUrl,
+                    oldImage: imageUrl,
+                    action: 'OLD'
+                }
+            }) 
+
+            this.updateFile()
+        }
     }
 
     setImageView(url: any) {
@@ -48,12 +52,6 @@ export class ImageViewComponent {
     addFile(event: any) {
         const files = event.target.files[0]
         const self: any = this
-        // console.log(file)
-
-        //NB: JE NE SAIS PAS OU VA CE CODE section36 tout en bas
-        // if(this.files?.length) {
-        //     data['files'] = this.files
-        // }
 
         for(let index= 0; index < files.length; index++){
             const file = files[index]
@@ -100,8 +98,6 @@ export class ImageViewComponent {
     
         }
         
-       
-        
     }
 
     removeImage(url: string) {
@@ -121,7 +117,6 @@ export class ImageViewComponent {
 
     updateFile() {
         this.files = this.files.filter((fileItem: any) => fileItem.action !== "REMOVE")
-        // console.log(this.files)
         this.availableFiles = this.files.filter((fileItem: any) => fileItem.action !== 'DELETE')
         const sendFiles = this.files.filter((fileItem: any) => fileItem.action !== "OLD")
         this.emitFile.emit(sendFiles)
