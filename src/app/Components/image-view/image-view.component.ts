@@ -18,7 +18,8 @@ export class ImageViewComponent {
     availableFiles: any
     isUpdating: any = false
 
-    constructor() {}
+
+    constructor() {}  
 
     ngOnInit() {
         let picturesArray = this.pictures.split(';')
@@ -29,13 +30,14 @@ export class ImageViewComponent {
                     oldImage: imageUrl,
                     action: 'OLD'
                 }
-            }) 
+            })
 
             this.updateFile()
         }
     }
 
     setImageView(url: any) {
+        console.log(url)
         if(url) {
             this.imageUrl = url
         }
@@ -50,7 +52,7 @@ export class ImageViewComponent {
     }
 
     addFile(event: any) {
-        const files = event.target.files[0]
+        const files = event.target.files
         const self: any = this
 
         for(let index= 0; index < files.length; index++){
@@ -65,6 +67,7 @@ export class ImageViewComponent {
                 fileReader.readAsDataURL(file)
                 fileReader.onload = function() {
                     if(self.isUpdating) {
+                        // console.log('is updating')
                         //update
                         const url = self.isUpdating
                         self.isUpdating = false
@@ -85,6 +88,8 @@ export class ImageViewComponent {
                         })
                     }
                     else {
+                        // console.log('is add')
+                        // console.log(self)
                         self.files.push({
                             imageUrl: fileReader.result,
                             action: 'ADD',
@@ -116,14 +121,20 @@ export class ImageViewComponent {
     }
 
     updateFile() {
+        // console.log("update")
         this.files = this.files.filter((fileItem: any) => fileItem.action !== "REMOVE")
+        // console.log(this.files)
         this.availableFiles = this.files.filter((fileItem: any) => fileItem.action !== 'DELETE')
+        // console.log(this.files)
+        // const filesArray = this.files.join(';')
+        // console.log(filesArray)
         const sendFiles = this.files.filter((fileItem: any) => fileItem.action !== "OLD")
         this.emitFile.emit(sendFiles)
     }
 
     updateImage(url: string) {
         this.isUpdating = url
+        // console.log(this.isUpdating)
         this.handleAddFile(null)
     }
 

@@ -99,36 +99,40 @@ export class DataManagerComponent implements OnDestroy{
 
     handleFormChange(data: any) {
         let formData: any = {}
-        if(data?.files && !data?.files.length) {
-            //upload file
+
+        if(data?.files && data?.files.length !== 0) {  //upload new file
             const files = data.files
             delete data.files
 
             formData = new FormData()
-
             formData.append([this.entity], JSON.stringify(data))
 
-            //ADD OR UPDATE
-            files.filter((fileItem: any) => fileItem.action !== 'DELETE').foreach((fileItem: any) => {
-                formData.append('file', fileItem.file)
-            })
+            //ACTION 'ADD' OR 'UPDATE'
+            files
+                .filter((fileItem: any) => fileItem.action !== 'DELETE')
+                .forEach((fileItem: any) => formData.append('file', fileItem.file))
 
-            //DELETE 
-            const deleteFiles = files.filter((fileItem: any) => (fileItem.action === 'DELETE') || (fileItem.action === 'UPDATE')).map((fileItem: any) => fileItem.oldImage)
-
+            //ACTION 'DELETE'
+            const deleteFiles = 
+                files
+                    .filter((fileItem: any) => (fileItem.action === 'DELETE') || (fileItem.action === 'UPDATE'))
+                    .map((fileItem: any) => fileItem.oldImage)        
             formData.append('deleteFiles', JSON.stringify(deleteFiles))
+            
         }
-        else {
-            //normal
+        else { //without upload
             const entity: any = this.entity
             formData[entity] = data
         }
+
+        console.log([...formData]);
 
         //SAVE DATA
         if(formData) {
             if(this.action === 'edit'){
                 this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
                     next: (value: any) => {
+                        console.log(value)
                         const message = "Update success"
                         const status = "success"
                         this.notificationService.emitNotification({message, status})

@@ -14,7 +14,7 @@ export class ImagePreviewComponent {
     constructor() {}
 
     ngOnInit() {
-        console.log(this.src)
+        // console.log(this.src)
         const WT: any = window
         this.myModal = new WT['bootstrap'].Modal('#imagePreview', {keyboard: false})
         this.myModal.show()

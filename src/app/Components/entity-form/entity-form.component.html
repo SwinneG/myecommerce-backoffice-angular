@@ -15,27 +15,6 @@
             [value]="name | formatFormValue: data"
         >
 
-        <select 
-            *ngIf="(name | formatType: data) === 'SELECT'"
-            [formControlName]="name" 
-            id=""
-            [name]="name"
-            class="form-control single-select"
-        >
-            <option 
-                [value]="true"
-                [selected]="(name | formatFormValue : data) == true"
-            >
-                Yes
-            </option>
-            <option 
-                [value]="false"
-                [selected]="(name | formatFormValue : data) == false"
-            >
-                No
-            </option>
-        </select>
-
         <div *ngIf="(name | formatType: data) === 'IMAGE'">
             <app-image-view
                 [pictures]="name | formatFormValue : data"
@@ -43,31 +22,28 @@
             />
         </div>
 
-        <!-- <div *ngIf="(name | formatType: data) === 'OPTION'">
-            <app-option-form
-                [options]="name | formatFormValue: data"
-                (emitOption)="handleUpdateOption($event)"
-            />
-        </div> -->
-
-        <!-- <div *ngIf="(name | formatType: data) === 'SELECT_CATEGORIES'">
-            <select 
-                class="form-control select-categories"
-                name="categories[]" 
-                id=""
-                multiple="multiple"
-            >
-                <option 
-                    [value]="category.id"
-                    [selected]="categoriesSelected.includes(category.id)"
-                    *ngFor="let category of categories"
-                >
-                    {{ category.name }}
-                </option>
-            </select>
-        </div> -->
-
+        <div *ngIf="(name | formatType: data) === 'SELECT_FOREIGN'">
+            <div *ngFor="let object of objects">
+                <div *ngIf="name == object.name">
+                    <select 
+                        name="object[]" 
+                        id="" 
+                        class="form-control form-select"
+                        (change)="handleChangeObject($event)"
+                    >
+                        <option 
+                            *ngFor="let item of object.objects"
+                            [value]="item.id" 
+                            [selected] = objectSelected
+                        >
+                            {{item.name}}
+                        </option>
+                    </select>
+                </div>
+             </div>
+        </div>
     </div>
+
 
     <div class="action">
         <a class="btn btn-danger" [routerLink]="['/', entity]">

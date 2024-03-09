@@ -19,33 +19,50 @@ export class EntityFormComponent {
 
     form: any;
     formData: any = {}
-    // categories: any
-    // categoriesSelected: any
     files: any
+    objects: any
+    objectSelected: any
 
     constructor(
         private fb: FormBuilder,
         private entityService: EntityService
     ) {}
 
-    async ngOnInit() {
-        //EXEMPLE: champs qu'on ne gère pas nous meme
-        // this.entityNames = this.entityNames.filter((name: string) => {
-        //     if(name === 'created-at') {
-        //         return false
-        //     }
-        //     return true
-        // })
+    ngOnInit() {
 
-        // EXEMPLE: categories
-        // if(this.entityNames.includes("categories")) {
-        //     const data: any = await lastValueFrom(this.entityService.getDatas("category"))
-        //     this.categoriesSelected = this.data["categories"]
-        //     this.categories = data.results
-        // }
-        // console.log({categories: this.categories})
+        //FIELS WE DON'T MANAGE
+        this.entityNames = this.entityNames.filter((name: string) => {
+            if(name === 'created' || name === 'user') {
+                return false
+            }
+            return true
+        })
 
+        //DATA WITH OBJECT TYPE
+        this.objects = []
+        this.entityNames.forEach(async (name: any) => {
+            const value = this.data[name]
+            if(typeof value ==="object") {
+                let data: any;
+                if(name == 'chassis'){
+                    data = await lastValueFrom(this.entityService.getDatas(name,""))
+                }
+                else if(name == "equipmentCategory") {
+                    data = await lastValueFrom(this.entityService.getDatas("equipmentCategories",""))
+                }
+                else {
+                    data = await lastValueFrom(this.entityService.getDatas(name+"s",""))
+                }
+
+                this.objectSelected = this.data[name+"Id"]
+                
+                let results = data.results.rows
+                this.objects.push({name, objects: results})
+            }
+        })
+        
         this.initForm()
+
     }
 
     initForm() {
@@ -57,49 +74,18 @@ export class EntityFormComponent {
         this.form = this.fb.group(formObject)
     }
 
-    initSelect() {
-        const WD: any = window;
-        const $ = WD.query;
-        const self = this;
-
-        $(document).ready(function() {
-            // $('.select-categories').select2()
-            // $('.select-categories').on('select2:select', function(event: any){
-            //     const values = $('.select-categories').select2('val')
-            //     // console.log(values)
-            //     self.formData["categories"] = values
-            // })
-            // $('.select-categories').on('select2:unselect', function(event: any){
-            //     const values = $('.select-categories').select2('val')
-            //     self.formData['categories'] = values
-            // })
-
-            $('.single-select').select2()
-            $('single-select').on('select2:select', function(event: any){
-                const {name, value} = event.target;
-                self.formData[name] = value
-            })
-        })
-    }
-
     handleSubmit() {
         const data = {...this.form.value, ...this.formData}
+        // console.log(this.files)
         if(this.files) {
             data['files'] = this.files
         }
         this.formEmit.emit({...data})
     }
 
-    // handleUpdateOption(data: any){
-    //     console.log(data)
-    //     this.formData['options'] = data
-    //     console.log(this.formData)
-    // }
-
-    // handleChangeCategory(event: any) {
-    //     const {name, value} = event.target
-    //     console.log({name, value})
-    // }
+    handleChangeObject(event: any) {
+        const {name, value} = event.target
+    }
 
     handleChangeFile(files: any) {
         this.files = files

@@ -113,7 +113,7 @@ export class MainComponent implements OnDestroy{
                     //else {
                         this.datas = results?.rows
                         this.result = data
-                        console.log(this.datas)
+                        // console.log(this.datas)
                    // }
                 } 
             },

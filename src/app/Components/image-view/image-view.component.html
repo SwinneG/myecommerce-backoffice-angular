@@ -13,8 +13,8 @@
     </div>
 
     <div class="col-md-4">
-        <input type="file" name="file" id="file" class="none" (change)="addFile($event)" [multiple]="true">
-        <button class="btn btn-success">
+        <input type="file" name="file" id="file" [multiple]="true" style="display: none" (change)="addFile($event)">
+        <button class="btn btn-success" (click)="handleAddFile($event)">
             Add image
         </button>
         {{errorMessage}}
