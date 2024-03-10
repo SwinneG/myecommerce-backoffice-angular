@@ -17,7 +17,7 @@
 
         <div *ngIf="(name | formatType: data) === 'IMAGE'">
             <app-image-view
-                [pictures]="name | formatFormValue : data"
+                [images]="name | formatFormValue : data"
                 (emitFile)="handleChangeFile($event)"
             />
         </div>

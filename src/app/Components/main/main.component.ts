@@ -1,11 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, ChildActivationEnd } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { getEntityProperties } from 'src/app/Helpers/helpers';
 import { EntityService } from 'src/app/Services/entity.service';
 import { faEye, faEdit, faTrash, faPlus, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'src/app/Helpers/route'
-import { Subscription, lastValueFrom } from 'rxjs';
-import { compileNgModule } from '@angular/compiler';
+import { Subscription, forkJoin, lastValueFrom, map, mergeMap } from 'rxjs';
  
 @Component({
   selector: 'app-main',
@@ -27,7 +26,7 @@ export class MainComponent implements OnDestroy{
     query: string = ""
     searchTag: string = ""
     displaySelectionBox: boolean = false
-    pictures: any|null = null
+    // pictures: any|null = null
     entityDelete: any
     isDeleting: boolean = false
     modalTitle: string = ""
@@ -110,11 +109,21 @@ export class MainComponent implements OnDestroy{
 
                         this.result = data
                     }*/
-                    //else {
+
+                  /* if(this.entity === 'cars') {
+                        this.datas = results?.rows
+
+                        console.log(this.datas)
+
+
+                        this.result = data
+                        // console.log(this.result)
+                    }
+                    else {*/
                         this.datas = results?.rows
                         this.result = data
                         // console.log(this.datas)
-                   // }
+                    /*}*/
                 } 
             },
             error: (error: any) => {
@@ -157,7 +166,7 @@ export class MainComponent implements OnDestroy{
         this.saveLocalData(index, data)
     }
 
-    setImageView(name: any, data: any) {
+   /* setImageView(name: any, data: any) {
 
         if(!name && !data) {
             this.pictures = null
@@ -176,7 +185,7 @@ export class MainComponent implements OnDestroy{
         }
         
     }
-
+*/
     saveLocalData(key: string, value: string) {
         if(window.localStorage) {
             window.localStorage.setItem(key, JSON.stringify(value))

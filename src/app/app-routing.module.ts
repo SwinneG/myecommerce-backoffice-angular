@@ -55,6 +55,10 @@ const routes: Routes = [
         component: MainComponent
     },
     {
+        path: "carImages",
+        component: MainComponent
+    },
+    {
         path: ":entity/:id/:action",
         component: DataManagerComponent
     },

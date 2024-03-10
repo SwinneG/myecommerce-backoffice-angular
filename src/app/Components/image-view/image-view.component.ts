@@ -8,12 +8,12 @@ import { isImage } from 'src/app/Helpers/utils';
 })
 export class ImageViewComponent {
 
-    @Input() pictures: any = ''
+    @Input() images: any = ''
 
     @Output() emitFile = new EventEmitter<any>()
 
     imageUrl: any
-    files: any
+    file: any
     errorMessage: string = ''
     availableFiles: any
     isUpdating: any = false
@@ -22,18 +22,22 @@ export class ImageViewComponent {
     constructor() {}  
 
     ngOnInit() {
-        let picturesArray = this.pictures.split(';')
-        if(picturesArray[0] !==''){
-            this.files = picturesArray.map((imageUrl: string) => {
-                return {
-                    imageUrl: imageUrl,
-                    oldImage: imageUrl,
-                    action: 'OLD'
-                }
-            })
+        // let imagesArray = this.images.split(';')
+        // if(imagesArray[0] !==''){
+            //console.log( this.images)
+            this.file = new TextDecoder("utf-8").decode(new Uint8Array(this.images.data));
+            console.log(this.file)
+            //this.files = this.images.map((imageUrl: string) => {
+                //console.log(imageUrl)
+                // return {
+                //     imageUrl: imageUrl,
+                //     oldImage: imageUrl,
+                //     action: 'OLD'
+                // }
+            //})
 
             this.updateFile()
-        }
+        // }
     }
 
     setImageView(url: any) {
@@ -106,7 +110,7 @@ export class ImageViewComponent {
     }
 
     removeImage(url: string) {
-        this.files = this.files.map((fileItem: any) => {
+        this.file = this.file.map((fileItem: any) => {
             if(fileItem.imageUrl === url) {
                 if(fileItem.action == "ADD"){
                     fileItem.action = "REMOVE"
@@ -122,13 +126,13 @@ export class ImageViewComponent {
 
     updateFile() {
         // console.log("update")
-        this.files = this.files.filter((fileItem: any) => fileItem.action !== "REMOVE")
+        this.file = this.file/*.filter((fileItem: any) => fileItem.action !== "REMOVE")*/
         // console.log(this.files)
-        this.availableFiles = this.files.filter((fileItem: any) => fileItem.action !== 'DELETE')
+        this.availableFiles = this.file/*.filter((fileItem: any) => fileItem.action !== 'DELETE')*/
         // console.log(this.files)
         // const filesArray = this.files.join(';')
         // console.log(filesArray)
-        const sendFiles = this.files.filter((fileItem: any) => fileItem.action !== "OLD")
+        const sendFiles = this.file/*.filter((fileItem: any) => fileItem.action !== "OLD")*/
         this.emitFile.emit(sendFiles)
     }
 

@@ -91,7 +91,8 @@
                         <td scope="row">
                             {{ result?.total - ((result.currentPage-1)*pageLimit) - index }}
                         </td>
-                        <td *ngFor="let name of entityNames" (click)="setImageView(name, data)">
+                        <!-- (click)="setImageView(name, data)" -->
+                        <td *ngFor="let name of entityNames" >
                             <div [innerHTML]="getValue(data, name) | formatTag: searchTag | formatvalue: [name, data]"></div>
                         </td>
                         <td>
@@ -109,11 +110,11 @@
                 </tbody>
             </table>
 
-            <app-image-preview
+            <!-- <app-image-preview
                 *ngIf="pictures"
                 [src]="pictures"
                 (closeModal)="setImageView(null, null)"
-            />
+            /> -->
 
             <div class="d-flex justify-content-end">
                 <div class="item-per-page">

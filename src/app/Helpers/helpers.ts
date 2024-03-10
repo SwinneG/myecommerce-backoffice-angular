@@ -1,5 +1,6 @@
 import { Brands } from '../Models/brand';
 import { Car } from '../Models/car';
+import { CarImages } from '../Models/car-image';
 import { Chassis } from '../Models/chassis';
 import { Equipments } from '../Models/equipment';
 import { EquipmentCategories } from '../Models/equipment-category';
@@ -50,6 +51,9 @@ export const getEntityProperties = (entity: string): Array<string> => {
     if(entity == "equipmentCategories") {
         entityClass = new EquipmentCategories()
     }
+    if(entity == "carImages") {
+        entityClass = new CarImages()
+    }
 
     if(entityClass) {
         results = Object.keys(entityClass)
@@ -94,6 +98,9 @@ export const getEntity = (entity: string): any => {
     }
     if(entity == "equipmentCategories") {
         entityClass = new EquipmentCategories()
+    }
+    if(entity == "carImages") {
+        entityClass = new CarImages()
     }
 
     return entityClass

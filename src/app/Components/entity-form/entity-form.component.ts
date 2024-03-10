@@ -1,3 +1,4 @@
+import { compileDeclareNgModuleFromMetadata, compileNgModule } from '@angular/compiler';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
@@ -19,7 +20,7 @@ export class EntityFormComponent {
 
     form: any;
     formData: any = {}
-    files: any
+    file: any
     objects: any
     objectSelected: any
 
@@ -42,6 +43,7 @@ export class EntityFormComponent {
         this.objects = []
         this.entityNames.forEach(async (name: any) => {
             const value = this.data[name]
+
             if(typeof value ==="object") {
                 let data: any;
                 if(name == 'chassis'){
@@ -50,6 +52,10 @@ export class EntityFormComponent {
                 else if(name == "equipmentCategory") {
                     data = await lastValueFrom(this.entityService.getDatas("equipmentCategories",""))
                 }
+                else if(name == 'image'){
+                    // console.log(name)
+                    data = await lastValueFrom(this.entityService.getDatas("carImages",""))
+                }
                 else {
                     data = await lastValueFrom(this.entityService.getDatas(name+"s",""))
                 }
@@ -57,6 +63,7 @@ export class EntityFormComponent {
                 this.objectSelected = this.data[name+"Id"]
                 
                 let results = data.results.rows
+                // console.log(results)
                 this.objects.push({name, objects: results})
             }
         })
@@ -76,9 +83,9 @@ export class EntityFormComponent {
 
     handleSubmit() {
         const data = {...this.form.value, ...this.formData}
-        // console.log(this.files)
-        if(this.files) {
-            data['files'] = this.files
+        // console.log(this.file)
+        if(this.file) {
+            data['files'] = this.file
         }
         this.formEmit.emit({...data})
     }
@@ -88,7 +95,7 @@ export class EntityFormComponent {
     }
 
     handleChangeFile(files: any) {
-        this.files = files
+        this.file = files
     }
 
 }

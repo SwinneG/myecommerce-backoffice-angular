@@ -26,8 +26,12 @@ export class FormatTypePipe implements PipeTransform {
     //     type = Type.SELECT
     // }
 
-    if(name === "pictures") {
-        type = Type.IMAGE
+    // if(name === "pictures") {
+    //     type = Type.IMAGE
+    // }
+
+    if(name === 'image') {
+      type = Type.IMAGE
     }
 
     //EXEMPLE OPTIONS:

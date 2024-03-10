@@ -13,7 +13,7 @@ import { User } from "./user"
 export class Car {
     //id: number = 0
     name: string = ""
-    pictures: string = ""
+   // pictures: string = ""
     power: number = 0
     nb_horses: number = 0
     nb_kms: number = 0

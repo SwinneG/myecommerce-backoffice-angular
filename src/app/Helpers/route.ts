@@ -54,4 +54,9 @@ export const routes = [
         name: "Equipment Categories",
         single: "Equipment Category"
     },
+    {
+        path: "carImages",
+        name: "Car Images",
+        single: "Car Image"
+    },
 ]
