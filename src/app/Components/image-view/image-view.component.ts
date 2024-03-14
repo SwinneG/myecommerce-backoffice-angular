@@ -13,7 +13,7 @@ export class ImageViewComponent {
     @Output() emitFile = new EventEmitter<any>()
 
     imageUrl: any
-    file: any
+    files: any
     errorMessage: string = ''
     availableFiles: any
     isUpdating: any = false
@@ -22,26 +22,20 @@ export class ImageViewComponent {
     constructor() {}  
 
     ngOnInit() {
-        // let imagesArray = this.images.split(';')
-        // if(imagesArray[0] !==''){
-            //console.log( this.images)
-            this.file = new TextDecoder("utf-8").decode(new Uint8Array(this.images.data));
-            console.log(this.file)
-            //this.files = this.images.map((imageUrl: string) => {
-                //console.log(imageUrl)
-                // return {
-                //     imageUrl: imageUrl,
-                //     oldImage: imageUrl,
-                //     action: 'OLD'
-                // }
-            //})
 
-            this.updateFile()
-        // }
+        this.files = this.images.map((element:any) => {
+            let newEl =  new TextDecoder("utf-8").decode(new Uint8Array(element.image.data));
+            return {
+                imageUrl: newEl,
+                oldImage: newEl,
+                action: 'OLD'
+            }
+        });
+        this.updateFile()
+      
     }
 
     setImageView(url: any) {
-        console.log(url)
         if(url) {
             this.imageUrl = url
         }
@@ -56,22 +50,74 @@ export class ImageViewComponent {
     }
 
     addFile(event: any) {
-        const files = event.target.files
+
+        const file = event.target.files[0]
+        const self: any = this
+        
+        if(!isImage(file.name)) {
+            this.errorMessage = "Error file type!"
+            return
+        }
+        this.errorMessage = ""
+        
+        if(file) {
+            let fileReader = new FileReader();
+            fileReader.readAsDataURL(file)
+            fileReader.onload = function() {
+                if(self.isUpdating) {
+                    //UPDATE
+                    const url = self.isUpdating
+                    self.isUpdating = false
+                    self.files = self.files.map((fileItem:any) => {
+                        if(fileItem.imageUrl === url ) {
+                            if(fileItem.action === 'OLD') {
+                                fileItem.imageUrl = fileReader.result
+                                fileItem.file = file
+                                fileItem.action = 'UPDATE'
+                            }
+                            else {
+                                fileItem.imageUrl = fileReader.result
+                                fileItem.file = file
+                            }
+                            
+                        }
+                        return fileItem
+                    })
+                }
+                else {
+                    //ADD
+                    self.files.push({
+                        imageUrl: fileReader.result,
+                        action: 'ADD',
+                        file
+                    })
+                }
+                
+               
+               self.updateFile()
+            }
+        }
+
+        /*const files = event.target.files
+        console.log(files)
         const self: any = this
 
         for(let index= 0; index < files.length; index++){
             const file = files[index]
+            // console.log(file)
+           
             if(!isImage(file.name)) {
                 this.errorMessage = "Error file type!"
                 return
             }
             this.errorMessage = ''
+
             if(file) {
                 let fileReader = new FileReader();
                 fileReader.readAsDataURL(file)
                 fileReader.onload = function() {
                     if(self.isUpdating) {
-                        // console.log('is updating')
+                        console.log('is updating')
                         //update
                         const url = self.isUpdating
                         self.isUpdating = false
@@ -92,9 +138,24 @@ export class ImageViewComponent {
                         })
                     }
                     else {
-                        // console.log('is add')
-                        // console.log(self)
-                        self.files.push({
+                        console.log('is add')
+                        // console.log(self.file)
+
+                        // console.log( this.images)
+                        // self.file.forEach((element:any) => {
+                        //     element = new TextDecoder("utf-8").decode(new Uint8Array(element.image.data));
+                        //     console.log(element)
+                        // });
+
+                        // let result:any = fileReader.result
+                        // console.log(result)
+                        // if(result){
+                        //     let urlResult = new TextDecoder("utf-8").decode(new Uint8Array(result));
+                        //     console.log(urlResult)
+                        // }
+                        
+
+                        self.file.push({
                             imageUrl: fileReader.result,
                             action: 'ADD',
                             file
@@ -105,18 +166,18 @@ export class ImageViewComponent {
                 }
             }
     
-        }
+        }*/
         
     }
 
     removeImage(url: string) {
-        this.file = this.file.map((fileItem: any) => {
+        this.files = this.files.map((fileItem:any) => {
             if(fileItem.imageUrl === url) {
-                if(fileItem.action == "ADD"){
-                    fileItem.action = "REMOVE"
+                if(fileItem.action == 'ADD') {
+                    fileItem.action = 'REMOVE' 
                 }
                 else {
-                    fileItem.action = "DELETE"
+                    fileItem.action = 'DELETE'
                 }
             }
             return fileItem
@@ -124,22 +185,32 @@ export class ImageViewComponent {
         this.updateFile()
     }
 
+    updateImage(url: string) {
+        this.isUpdating = url
+        this.handleAddFile(null)
+    }
+
     updateFile() {
+
+        this.files = this.files.filter((fileItem:any) => fileItem.action !== 'REMOVE')
+        this.availableFiles = this.files.filter((fileItem:any) => fileItem.action !== 'DELETE')
+        const sendFiles = this.files.filter((fileItem:any) => fileItem.action !== 'OLD')
+        this.emitFile.emit(sendFiles)
+
+
+
         // console.log("update")
-        this.file = this.file/*.filter((fileItem: any) => fileItem.action !== "REMOVE")*/
+        // console.log(this.file)
+       // this.file = this.file.filter((fileItem: any) => fileItem.action !== "REMOVE")
         // console.log(this.files)
-        this.availableFiles = this.file/*.filter((fileItem: any) => fileItem.action !== 'DELETE')*/
+        //this.availableFiles = this.file.filter((fileItem: any) => fileItem.action !== 'DELETE')
         // console.log(this.files)
         // const filesArray = this.files.join(';')
         // console.log(filesArray)
-        const sendFiles = this.file/*.filter((fileItem: any) => fileItem.action !== "OLD")*/
-        this.emitFile.emit(sendFiles)
+        // const sendFiles = this.file.filter((fileItem: any) => fileItem.action !== "OLD")
+        // this.emitFile.emit(sendFiles)
     }
 
-    updateImage(url: string) {
-        this.isUpdating = url
-        // console.log(this.isUpdating)
-        this.handleAddFile(null)
-    }
+    
 
 }

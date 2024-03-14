@@ -30,7 +30,7 @@ export class FormatTypePipe implements PipeTransform {
     //     type = Type.IMAGE
     // }
 
-    if(name === 'image') {
+    if(name === 'image' || name == 'carImages') {
       type = Type.IMAGE
     }
 

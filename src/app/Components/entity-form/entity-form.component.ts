@@ -20,7 +20,7 @@ export class EntityFormComponent {
 
     form: any;
     formData: any = {}
-    file: any
+    files: any
     objects: any
     objectSelected: any
 
@@ -52,7 +52,7 @@ export class EntityFormComponent {
                 else if(name == "equipmentCategory") {
                     data = await lastValueFrom(this.entityService.getDatas("equipmentCategories",""))
                 }
-                else if(name == 'image'){
+                else if(name == 'image' || name == 'carImages'){
                     // console.log(name)
                     data = await lastValueFrom(this.entityService.getDatas("carImages",""))
                 }
@@ -83,9 +83,9 @@ export class EntityFormComponent {
 
     handleSubmit() {
         const data = {...this.form.value, ...this.formData}
-        // console.log(this.file)
-        if(this.file) {
-            data['files'] = this.file
+        if(this.files) {
+            data["files"] = this.files
+            // console.log(data)
         }
         this.formEmit.emit({...data})
     }
@@ -95,7 +95,8 @@ export class EntityFormComponent {
     }
 
     handleChangeFile(files: any) {
-        this.file = files
+        // console.log(files)
+        this.files = files
     }
 
 }

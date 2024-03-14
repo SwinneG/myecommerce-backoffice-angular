@@ -1,4 +1,5 @@
 import { Brands } from "./brand"
+import { CarImages } from "./car-image"
 import { Chassis } from "./chassis"
 import { Equipments } from "./equipment"
 import { EquipmentCategories } from "./equipment-category"
@@ -73,4 +74,5 @@ export class Car {
     user: User ={
         name: ""
     }
+    carImages: Array<CarImages> =  []
 }

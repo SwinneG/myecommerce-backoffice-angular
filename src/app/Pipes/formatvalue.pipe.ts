@@ -38,38 +38,14 @@ export class FormatvaluePipe implements PipeTransform {
 
     let newValue = value
     let name = args[0]
-    // console.log(name)
-    // console.log(newValue)
-
-    // console.log(name)
-    // console.log(value)
-    // let data = args[1]
 
     const url = this.route.snapshot.url
-    // const firstPath = url[0].path
-    // console.log(url[0].path)
 
-    // let action =""
-    // if(url[2]){ //view
-    //     action = url[2]?.path
-    // }
+    let action =""
+    if(url[2]){ //view
+        action = url[2]?.path
+    }
 
-   /* if(name == 'pictures') {
-        const urlsArray = value.split(';');
-       
-        if(action=="view"){
-            const newArray = urlsArray.map((item: string) => {
-                return `<div class="col-md-4"><img src='${item}' width='100%'></div>`
-            }).join('')
-            newValue = `<div class="row">`
-            newValue += newArray
-            newValue += `</div>`
-        }
-        else {
-            newValue = `<img src='${urlsArray[0]}' width='100%'>`
-        }
-        
-    }*/
     
     if(name == 'fuel' || name == 'extcolor' || name == 'intcolor' || name == 'transmission' || name == 'brand' || name == 'model' || name == 'state' || name == 'chassis' || name == 'equipment' || name == 'equipmentCategory') {
         const obj = value;
@@ -82,7 +58,7 @@ export class FormatvaluePipe implements PipeTransform {
     }
     if(name == 'image'){
           const obj = value
-          // console.log(obj)
+        //   console.log(obj)
   
           // const buffer = new Uint8Array(obj.data);
           // console.log(buffer)
@@ -97,6 +73,27 @@ export class FormatvaluePipe implements PipeTransform {
           // console.log(url); // Affiche l'URL sous forme de chaîne
   
           newValue=`<img src='${url}' width='50'>`
+    }
+
+    if(name == 'carImages') {
+       
+        let obj = value
+      
+        if(action=="view"){
+            console.log(obj)
+            newValue = []
+            obj.forEach((element:any) => {
+                const url = new TextDecoder("utf-8").decode(new Uint8Array(element.image.data));
+                newValue.push(`<img src='${url}' width='50'>`)
+            });
+        }
+        else {
+            if(obj[0]) {
+                const url = new TextDecoder("utf-8").decode(new Uint8Array(obj[0]?.image?.data));
+                newValue= `<img src='${url}' width='50'>`
+            }
+        }
+        
     }
    
 

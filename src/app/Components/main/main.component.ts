@@ -27,6 +27,7 @@ export class MainComponent implements OnDestroy{
     searchTag: string = ""
     displaySelectionBox: boolean = false
     // pictures: any|null = null
+    images: any|null = null
     entityDelete: any
     isDeleting: boolean = false
     modalTitle: string = ""
@@ -110,20 +111,11 @@ export class MainComponent implements OnDestroy{
                         this.result = data
                     }*/
 
-                  /* if(this.entity === 'cars') {
-                        this.datas = results?.rows
-
-                        console.log(this.datas)
-
-
-                        this.result = data
-                        // console.log(this.result)
-                    }
-                    else {*/
-                        this.datas = results?.rows
-                        this.result = data
-                        // console.log(this.datas)
-                    /*}*/
+                  
+                    this.datas = results?.rows
+                    this.result = data
+                    // console.log(this.datas)
+                  
                 } 
             },
             error: (error: any) => {
@@ -166,26 +158,26 @@ export class MainComponent implements OnDestroy{
         this.saveLocalData(index, data)
     }
 
-   /* setImageView(name: any, data: any) {
+    setImageView(name: any, data: any) {
 
         if(!name && !data) {
-            this.pictures = null
+            this.images = null
         }
 
-        if(name === "pictures") {
-            this.pictures = data['pictures']
+        if(name === "carImages") {
+            this.images = data['carImages']
 
-            let picturesArray = this.pictures?.split(';')
-            if(picturesArray){
-                this.pictures = picturesArray
-            }
+            this.images.map((img: any) => {
+                const url = new TextDecoder("utf-8").decode(new Uint8Array(img.image.data));
+                this.images.push(url)
+            })
         }
         else {
-            this.pictures = null
+            this.images = null
         }
         
     }
-*/
+
     saveLocalData(key: string, value: string) {
         if(window.localStorage) {
             window.localStorage.setItem(key, JSON.stringify(value))

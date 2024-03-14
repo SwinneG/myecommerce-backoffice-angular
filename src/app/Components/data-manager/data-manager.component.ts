@@ -98,7 +98,51 @@ export class DataManagerComponent implements OnDestroy{
     }
 
     handleFormChange(data: any) {
+
         let formData: any = {}
+
+        if(data?.files && data?.files.length !== 0) {
+            //upload file
+            console.log('upload file')
+            const files = data.files
+            delete data.files
+
+            formData = new FormData()
+            //formData = data
+            formData.append([this.entity],JSON.stringify(data))
+           // console.log(formData)
+
+            //ADD OR UPDATE
+            files.filter((fileItem:any) => fileItem.action !== 'DELETE').forEach((fileItem:any) => {
+                formData.append('file', fileItem.file)
+            })
+            
+
+            //DELETE
+            const deleteFiles = files.filter((fileItem:any) => {fileItem.action === 'DELETE'}).map((fileItem: any) => fileItem.oldImage)
+            formData.append('deleteFiles', JSON.stringify(deleteFiles))
+
+            console.log(...formData)
+
+        }
+        else {
+            //Normal
+            console.log('normal')
+            formData = data
+        }
+
+        //SAVE DATA
+        if(formData) {
+            this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
+                next: (value: any) => {
+                    console.log(value)
+                }
+            })
+        }
+
+
+
+       /* let formData: any = {}
 
         if(data?.files && data?.files.length !== 0) {  //upload new file
             const files = data.files
@@ -125,14 +169,14 @@ export class DataManagerComponent implements OnDestroy{
             formData[entity] = data
         }
 
-        console.log([...formData]);
+        // console.log([...formData]);
 
         //SAVE DATA
         if(formData) {
             if(this.action === 'edit'){
                 this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
                     next: (value: any) => {
-                        console.log(value)
+                        //console.log(value)
                         const message = "Update success"
                         const status = "success"
                         this.notificationService.emitNotification({message, status})
@@ -159,6 +203,6 @@ export class DataManagerComponent implements OnDestroy{
                 })
             }
            
-        }
+        }*/
     }
 }
