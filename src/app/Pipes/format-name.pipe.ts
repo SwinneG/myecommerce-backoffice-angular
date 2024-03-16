@@ -6,14 +6,33 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatNamePipe implements PipeTransform {
 
   transform(value: string): string {
-
-    let newValueArray: any = value.split('_')
-    newValueArray = newValueArray.map((name: string) => {
-        return name.charAt(0).toUpperCase()+name.slice(1)
-    })
+  
+        let newValueArray: any = value.split('_')
+        newValueArray = newValueArray.map((name: string) => {
+            return name.charAt(0).toUpperCase()+name.slice(1)
+        })
     
-    let newValue = newValueArray.join(" ")
-    return newValue
+       let newValue = newValueArray.join(" ")
+    
+        switch(newValue) {
+            case 'Extcolor':
+                newValue = 'Exterior color';
+                break;
+            case 'Intcolor':
+                newValue = 'Interior color';
+                break;
+            case 'CarImages':
+                newValue = 'Car Images';
+                break;
+            case "Created":
+                newValue = 'Created at';
+                break;
+            case "User":
+                newValue = 'Created by';
+                break;
+        }
+        
+        return newValue
   }
 
 }

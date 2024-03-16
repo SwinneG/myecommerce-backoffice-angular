@@ -5,7 +5,6 @@ import { actions } from 'src/app/Helpers/actions';
 import { getEntity, getEntityProperties } from 'src/app/Helpers/helpers';
 import { routes } from 'src/app/Helpers/route';
 import { formatToCamelCase } from 'src/app/Helpers/utils';
-import { NotificationModel } from 'src/app/Models/notification-model';
 import { EntityService } from 'src/app/Services/entity.service';
 import { WebNotificationService } from 'src/app/Services/web-notification.service';
 
@@ -101,108 +100,72 @@ export class DataManagerComponent implements OnDestroy{
 
         let formData: any = {}
 
+        //CASE: Upload files
         if(data?.files && data?.files.length !== 0) {
-            //upload file
-            console.log('upload file')
             const files = data.files
             delete data.files
 
             formData = new FormData()
-            //formData = data
             formData.append([this.entity],JSON.stringify(data))
-           // console.log(formData)
-
+            
             //ADD OR UPDATE
             files.filter((fileItem:any) => fileItem.action !== 'DELETE').forEach((fileItem:any) => {
                 formData.append('file', fileItem.file)
             })
-            
 
             //DELETE
-            const deleteFiles = files.filter((fileItem:any) => {fileItem.action === 'DELETE'}).map((fileItem: any) => fileItem.oldImage)
+            const deleteFiles = files
+                .filter((fileItem:any) => fileItem.action === 'DELETE' || fileItem.action === 'UPDATE')
+                .map((fileItem: any) => fileItem.oldImage)
             formData.append('deleteFiles', JSON.stringify(deleteFiles))
 
-            console.log(...formData)
+            //console.log(...formData)
 
         }
+        //CASE: without Upload files
         else {
-            //Normal
-            console.log('normal')
             formData = data
         }
 
-        //SAVE DATA
-        if(formData) {
-            this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
-                next: (value: any) => {
-                    console.log(value)
-                }
-            })
-        }
-
-
-
-       /* let formData: any = {}
-
-        if(data?.files && data?.files.length !== 0) {  //upload new file
-            const files = data.files
-            delete data.files
-
-            formData = new FormData()
-            formData.append([this.entity], JSON.stringify(data))
-
-            //ACTION 'ADD' OR 'UPDATE'
-            files
-                .filter((fileItem: any) => fileItem.action !== 'DELETE')
-                .forEach((fileItem: any) => formData.append('file', fileItem.file))
-
-            //ACTION 'DELETE'
-            const deleteFiles = 
-                files
-                    .filter((fileItem: any) => (fileItem.action === 'DELETE') || (fileItem.action === 'UPDATE'))
-                    .map((fileItem: any) => fileItem.oldImage)        
-            formData.append('deleteFiles', JSON.stringify(deleteFiles))
-            
-        }
-        else { //without upload
-            const entity: any = this.entity
-            formData[entity] = data
-        }
-
-        // console.log([...formData]);
+        console.log(formData)
 
         //SAVE DATA
         if(formData) {
             if(this.action === 'edit'){
                 this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
                     next: (value: any) => {
-                        //console.log(value)
-                        const message = "Update success"
-                        const status = "success"
+                        console.log(value)
+                        const message = 'update success'
+                        const status = 'success'
                         this.notificationService.emitNotification({message, status})
                     },
                     error: (error: any) => {
-                        const message = "Update error"
-                        const status = "danger"
+                        const message = error
+                        const status = 'danger'
                         this.notificationService.emitNotification({message, status})
                     }
                 })
             }
-            else if(this.action === 'add') {
+            else if(this.action === 'add'){
                 this.entityService.addData(this.entity, formData).subscribe({
                     next: (value: any) => {
-                        const message = "Add success"
-                        const status = "success"
+                        //notification
+                        const message = 'Add success'
+                        const status = 'success'
                         this.notificationService.emitNotification({message, status})
+
+                        //redirection
+                        this.router.navigate(['/'+ this.entity])
                     },
-                    error: (error: any) => {
-                        const message = "Add error"
-                        const status = "danger"
+                    error: (error:any) => {
+                        //notification
+                        const message = error
+                        const status = 'danger'
                         this.notificationService.emitNotification({message, status})
                     }
                 })
             }
            
-        }*/
+        }
     }
 }

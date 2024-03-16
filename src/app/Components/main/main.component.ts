@@ -5,6 +5,7 @@ import { EntityService } from 'src/app/Services/entity.service';
 import { faEye, faEdit, faTrash, faPlus, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'src/app/Helpers/route'
 import { Subscription, forkJoin, lastValueFrom, map, mergeMap } from 'rxjs';
+import { environment } from 'src/environments/environment';
  
 @Component({
   selector: 'app-main',
@@ -26,13 +27,13 @@ export class MainComponent implements OnDestroy{
     query: string = ""
     searchTag: string = ""
     displaySelectionBox: boolean = false
-    // pictures: any|null = null
     images: any|null = null
     entityDelete: any
     isDeleting: boolean = false
     modalTitle: string = ""
     modalContent: string = ""
     group: Array<string> = []
+    total:number = 0
 
     getDatas$ = new Subscription()
 
@@ -65,6 +66,13 @@ export class MainComponent implements OnDestroy{
          }
          
         this.entityNamesAll = getEntityProperties(this.entity)
+        //remove this fields
+        this.entityNamesAll.map((element, index) => {
+            if(element == 'fuelId' || element == 'extcolorId' || element=='intcolorId' || element=='transmissionId' || element=='brandId' || element=='modelId' || element=='stateId' || element=='chassisId' || element=='equipmentId' || element=='equipmentCategoryId' || element=='userId') {
+                this.entityNamesAll.splice(index,1)
+            }
+        });
+
         const localData = this.getLocalData(this.entity)
         this.entityNames = localData ? localData ?.entityNames : [this.entityNamesAll[0]]
     }
@@ -113,8 +121,9 @@ export class MainComponent implements OnDestroy{
 
                   
                     this.datas = results?.rows
+
+                    this.total = data.total
                     this.result = data
-                    // console.log(this.datas)
                   
                 } 
             },
@@ -159,7 +168,6 @@ export class MainComponent implements OnDestroy{
     }
 
     setImageView(name: any, data: any) {
-
         if(!name && !data) {
             this.images = null
         }
@@ -168,7 +176,8 @@ export class MainComponent implements OnDestroy{
             this.images = data['carImages']
 
             this.images.map((img: any) => {
-                const url = new TextDecoder("utf-8").decode(new Uint8Array(img.image.data));
+                const urlDeBase = environment.apiUrl
+                const url = urlDeBase + img.image;
                 this.images.push(url)
             })
         }

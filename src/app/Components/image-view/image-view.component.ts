@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { isImage } from 'src/app/Helpers/utils';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-image-view',
@@ -24,13 +25,15 @@ export class ImageViewComponent {
     ngOnInit() {
 
         this.files = this.images.map((element:any) => {
-            let newEl =  new TextDecoder("utf-8").decode(new Uint8Array(element.image.data));
+            const imageUrlBase = environment.apiUrl;
+            let newEl = imageUrlBase + element.image
             return {
                 imageUrl: newEl,
                 oldImage: newEl,
                 action: 'OLD'
             }
         });
+
         this.updateFile()
       
     }
@@ -51,78 +54,28 @@ export class ImageViewComponent {
 
     addFile(event: any) {
 
-        const file = event.target.files[0]
+        const files = event.target.files
         const self: any = this
         
-        if(!isImage(file.name)) {
-            this.errorMessage = "Error file type!"
-            return
-        }
-        this.errorMessage = ""
-        
-        if(file) {
-            let fileReader = new FileReader();
-            fileReader.readAsDataURL(file)
-            fileReader.onload = function() {
-                if(self.isUpdating) {
-                    //UPDATE
-                    const url = self.isUpdating
-                    self.isUpdating = false
-                    self.files = self.files.map((fileItem:any) => {
-                        if(fileItem.imageUrl === url ) {
-                            if(fileItem.action === 'OLD') {
-                                fileItem.imageUrl = fileReader.result
-                                fileItem.file = file
-                                fileItem.action = 'UPDATE'
-                            }
-                            else {
-                                fileItem.imageUrl = fileReader.result
-                                fileItem.file = file
-                            }
-                            
-                        }
-                        return fileItem
-                    })
-                }
-                else {
-                    //ADD
-                    self.files.push({
-                        imageUrl: fileReader.result,
-                        action: 'ADD',
-                        file
-                    })
-                }
-                
-               
-               self.updateFile()
-            }
-        }
-
-        /*const files = event.target.files
-        console.log(files)
-        const self: any = this
-
-        for(let index= 0; index < files.length; index++){
+        for(let index=0; index < files.length; index++){
             const file = files[index]
-            // console.log(file)
-           
+
             if(!isImage(file.name)) {
                 this.errorMessage = "Error file type!"
                 return
             }
-            this.errorMessage = ''
+            this.errorMessage = ""
 
             if(file) {
                 let fileReader = new FileReader();
                 fileReader.readAsDataURL(file)
                 fileReader.onload = function() {
                     if(self.isUpdating) {
-                        console.log('is updating')
-                        //update
+                        //UPDATE
                         const url = self.isUpdating
                         self.isUpdating = false
-                        self.files = self.files.map((fileItem: any) => {
-                            if(fileItem.imageUrl === url) {
+                        self.files = self.files.map((fileItem:any) => {
+                            if(fileItem.imageUrl === url ) {
                                 if(fileItem.action === 'OLD') {
                                     fileItem.imageUrl = fileReader.result
                                     fileItem.file = file
@@ -138,35 +91,19 @@ export class ImageViewComponent {
                         })
                     }
                     else {
-                        console.log('is add')
-                        // console.log(self.file)
-
-                        // console.log( this.images)
-                        // self.file.forEach((element:any) => {
-                        //     element = new TextDecoder("utf-8").decode(new Uint8Array(element.image.data));
-                        //     console.log(element)
-                        // });
-
-                        // let result:any = fileReader.result
-                        // console.log(result)
-                        // if(result){
-                        //     let urlResult = new TextDecoder("utf-8").decode(new Uint8Array(result));
-                        //     console.log(urlResult)
-                        // }
-                        
-
-                        self.file.push({
+                        //ADD
+                        self.files.push({
                             imageUrl: fileReader.result,
                             action: 'ADD',
                             file
                         })
-                        self.updateFile()
                     }
                     
+                   
+                   self.updateFile()
                 }
             }
-    
-        }*/
+        }
         
     }
 
@@ -191,24 +128,10 @@ export class ImageViewComponent {
     }
 
     updateFile() {
-
         this.files = this.files.filter((fileItem:any) => fileItem.action !== 'REMOVE')
         this.availableFiles = this.files.filter((fileItem:any) => fileItem.action !== 'DELETE')
         const sendFiles = this.files.filter((fileItem:any) => fileItem.action !== 'OLD')
         this.emitFile.emit(sendFiles)
-
-
-
-        // console.log("update")
-        // console.log(this.file)
-       // this.file = this.file.filter((fileItem: any) => fileItem.action !== "REMOVE")
-        // console.log(this.files)
-        //this.availableFiles = this.file.filter((fileItem: any) => fileItem.action !== 'DELETE')
-        // console.log(this.files)
-        // const filesArray = this.files.join(';')
-        // console.log(filesArray)
-        // const sendFiles = this.file.filter((fileItem: any) => fileItem.action !== "OLD")
-        // this.emitFile.emit(sendFiles)
     }
 
     

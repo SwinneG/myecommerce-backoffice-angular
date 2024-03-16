@@ -1,6 +1,5 @@
 import { Brands } from '../Models/brand';
 import { Car } from '../Models/car';
-import { CarImages } from '../Models/car-image';
 import { Chassis } from '../Models/chassis';
 import { Equipments } from '../Models/equipment';
 import { EquipmentCategories } from '../Models/equipment-category';
@@ -12,8 +11,6 @@ import { States } from '../Models/state';
 import { Transmissions } from '../Models/transmission';
 
 export const getEntityProperties = (entity: string): Array<string> => {
-
-    // console.log(entity)
     
     let results: any = []
     let entityClass: any
@@ -50,9 +47,6 @@ export const getEntityProperties = (entity: string): Array<string> => {
     }
     if(entity == "equipmentCategories") {
         entityClass = new EquipmentCategories()
-    }
-    if(entity == "carImages") {
-        entityClass = new CarImages()
     }
 
     if(entityClass) {
@@ -98,9 +92,6 @@ export const getEntity = (entity: string): any => {
     }
     if(entity == "equipmentCategories") {
         entityClass = new EquipmentCategories()
-    }
-    if(entity == "carImages") {
-        entityClass = new CarImages()
     }
 
     return entityClass

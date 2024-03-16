@@ -1,8 +1,13 @@
 <form action="" [formGroup]="form" *ngIf="form">
     <div class="form-inline"  *ngFor="let name of entityNames">
-        <label for="">
+        
+        <label [for]="name"  *ngIf="(name | formatType: data) !== 'HIDDEN_FOREIGN'">
             {{ name | formatName }} :
         </label>
+
+        <!-- <label [for]="name" class="form-hidden"  *ngIf="(name | formatType: data) === 'HIDDEN_FOREIGN'">
+            {{ name | formatName }} :
+        </label> -->
 
         <!-- {{ name | formatType: data }} -->
 
@@ -10,7 +15,8 @@
             *ngIf="(name | formatType: data) === 'INPUT'"
             class="form-control"
             type="text" 
-            name=""
+            [name]="name"
+            [id]="name"
             [formControlName]="name" 
             [value]="name | formatFormValue: data"
         >
@@ -26,15 +32,15 @@
             <div *ngFor="let object of objects">
                 <div *ngIf="name == object.name">
                     <select 
-                        name="object[]" 
-                        id="" 
+                        [name]="name"
+                        [id]="name" 
                         class="form-control form-select"
                         (change)="handleChangeObject($event)"
                     >
                         <option 
                             *ngFor="let item of object.objects"
                             [value]="item.id" 
-                            [selected] = objectSelected
+                            [selected]="object.associatedFieldValue"
                         >
                             {{item.name}}
                         </option>
@@ -42,8 +48,16 @@
                 </div>
              </div>
         </div>
-    </div>
+   
+        <input 
+            *ngIf="(name | formatType: data) === 'HIDDEN_FOREIGN'"
+            [id]="name"
+            class="form-control form-hidden"
+            [value]="name | formatFormValue: data"
+        >
+        
 
+    </div>
 
     <div class="action">
         <a class="btn btn-danger" [routerLink]="['/', entity]">

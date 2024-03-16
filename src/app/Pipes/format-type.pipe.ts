@@ -8,6 +8,7 @@ enum Type {
     SELECT_FOREIGN = 'SELECT_FOREIGN',
     IMAGE = "IMAGE",
     // OPTION = "OPTION"
+    HIDDEN_FOREIGN = 'HIDDEN_FOREIGN'
 }
 
 @Pipe({
@@ -26,10 +27,6 @@ export class FormatTypePipe implements PipeTransform {
     //     type = Type.SELECT
     // }
 
-    // if(name === "pictures") {
-    //     type = Type.IMAGE
-    // }
-
     if(name === 'image' || name == 'carImages') {
       type = Type.IMAGE
     }
@@ -43,7 +40,10 @@ export class FormatTypePipe implements PipeTransform {
     // if(name === 'categories') {
     //     type = Type.SELECT_CATEGORIES
     // }  
-    
+
+    if(name === 'fuelId' || name === "extcolorId" || name === "intcolorId" || name === "transmissionId" || name === "brandId" || name === "modelId" || name === "stateId" || name === "chassisId" || name === "equipmentId" || name === "equipmentCategoryId"){
+        type= Type.HIDDEN_FOREIGN
+    }
     
     if(name === "fuel" || name === "extcolor" || name === "intcolor" || name === "transmission" || name === "brand" || name === "model" || name === "state" || name === "chassis" || name === "equipment" || name === "equipmentCategory") {
         type = Type.SELECT_FOREIGN

@@ -8,17 +8,18 @@ import { NotificationModel } from '../Models/notification-model';
 export class WebNotificationService {
 
     notif = new NotificationModel()
-    notification$ = new BehaviorSubject<any>(this.notif)
+    notification$ = new BehaviorSubject<NotificationModel>(this.notif)
 
     constructor() { }
 
     emitNotification(notification: any) {
-        // console.log(notification)
+
         const notif = new NotificationModel()
         notif.message = notification?.message ? notification?.message : notif.message
         notif.status = notification?.status ? notification?.status : notif.status
         notif.title = notification?.title ? notification?.title : notif.title
         notif.timeout = notification?.timeout ? notification?.timeout : notif.timeout
-        this.notification$.next(notification)
+        this.notification$.next(notif)
     }
+
 }

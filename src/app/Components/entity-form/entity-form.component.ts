@@ -22,7 +22,6 @@ export class EntityFormComponent {
     formData: any = {}
     files: any
     objects: any
-    objectSelected: any
 
     constructor(
         private fb: FormBuilder,
@@ -33,7 +32,7 @@ export class EntityFormComponent {
 
         //FIELS WE DON'T MANAGE
         this.entityNames = this.entityNames.filter((name: string) => {
-            if(name === 'created' || name === 'user') {
+            if(name === 'created' || name === 'user' || name === 'userId') {
                 return false
             }
             return true
@@ -47,28 +46,29 @@ export class EntityFormComponent {
             if(typeof value ==="object") {
                 let data: any;
                 if(name == 'chassis'){
-                    data = await lastValueFrom(this.entityService.getDatas(name,""))
+                    data = await lastValueFrom(this.entityService.getDatas(name,"", 1, -1))
                 }
                 else if(name == "equipmentCategory") {
-                    data = await lastValueFrom(this.entityService.getDatas("equipmentCategories",""))
+                    data = await lastValueFrom(this.entityService.getDatas("equipmentCategories","",1,-1))
                 }
                 else if(name == 'image' || name == 'carImages'){
-                    // console.log(name)
-                    data = await lastValueFrom(this.entityService.getDatas("carImages",""))
+                    data = await lastValueFrom(this.entityService.getDatas("carImages","",1,-1))
                 }
                 else {
-                    data = await lastValueFrom(this.entityService.getDatas(name+"s",""))
+                    data = await lastValueFrom(this.entityService.getDatas(name+"s","", 1, -1))
                 }
 
-                this.objectSelected = this.data[name+"Id"]
+                //value of associated (id) field for selected option
+                let associatedFieldValue = this.data[name + 'Id']
                 
                 let results = data.results.rows
-                // console.log(results)
-                this.objects.push({name, objects: results})
+
+                this.objects.push({name, objects: results, associatedFieldValue})
             }
         })
         
         this.initForm()
+        
 
     }
 
@@ -85,17 +85,27 @@ export class EntityFormComponent {
         const data = {...this.form.value, ...this.formData}
         if(this.files) {
             data["files"] = this.files
-            // console.log(data)
         }
         this.formEmit.emit({...data})
     }
 
     handleChangeObject(event: any) {
         const {name, value} = event.target
+
+        console.log({name, value} )
+        
+        //change value of associated (id) field
+        let associatedField = name+'Id'
+        console.log(associatedField)
+        if(associatedField) {
+            const el = document.querySelector('#'+associatedField) as HTMLInputElement;
+            if(el) {
+                el.value = value;
+            }
+        }
     }
 
     handleChangeFile(files: any) {
-        // console.log(files)
         this.files = files
     }
 

@@ -31,6 +31,7 @@ export class ModalComponent {
     }
 
     handleConfirmModal() {
+        this.myModal.hide()
         this.confirmAction.emit(true)
     }
 }

@@ -11,30 +11,27 @@ import { WebNotificationService } from 'src/app/Services/web-notification.servic
 })
 export class WebNotificationComponent  implements OnDestroy{
 
-    notification:any = new NotificationModel()
-    notifications: Array<NotificationModel> =  []
-    subscribe$= new Subscription()
+    notifications : Array<NotificationModel> = []
+
+    subscribe$ = new Subscription();
 
     constructor(
-        private notificationService: WebNotificationService
+        private notificationService : WebNotificationService
     ) {}
 
     ngOnInit() {
-        this.subscribe$ = this.notificationService.notification$.subscribe({
+       this.subscribe$ = this.notificationService.notification$.subscribe({
             next: (notification: NotificationModel) => {
-                
                 if(notification?.message) {
                     notification.id = generateId()
                     this.notifications.push(notification)
                     const timeout: any = notification.timeout
-                    // console.log(notification)
                     setTimeout(() => {
-                        this.notification = this.notifications.filter((notif: NotificationModel) => notif.id !== notification.id)
-                    }, timeout)
+                        this.notifications = this.notifications.filter((notif: NotificationModel) => notif.id !== notification.id)
+                    }, 5000)
                 }
-                
             }
-        })
+       })
     }
 
     ngOnDestroy(): void {
@@ -42,7 +39,9 @@ export class WebNotificationComponent  implements OnDestroy{
     }
 
     closeNotif(id: string) {
-        this.notification = this.notifications.filter((notif: NotificationModel) => notif.id !== id)
+        this.notifications = this.notifications.filter((notif: NotificationModel) => notif.id !== id)
     }
+
+   
 
 }

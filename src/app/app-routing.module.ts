@@ -6,10 +6,10 @@ import { Error404Component } from './Components/error404/error404.component';
 import { DataManagerComponent } from './Components/data-manager/data-manager.component';
 
 const routes: Routes = [
-    {
-        path: "",
-        component: MainComponent
-    },
+    { 
+        path: '',   
+        redirectTo: '/cars', 
+        pathMatch: 'full' },
     {
         path: "cars",
         component: MainComponent
@@ -52,10 +52,6 @@ const routes: Routes = [
     },
     {
         path: "equipmentCategories",
-        component: MainComponent
-    },
-    {
-        path: "carImages",
         component: MainComponent
     },
     {

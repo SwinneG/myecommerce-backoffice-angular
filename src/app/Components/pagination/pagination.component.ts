@@ -24,20 +24,7 @@ export class PaginationComponent implements OnChanges{
     constructor() {}
 
     ngOnInit() {
-        
         this.initPagination()
-
-        // console.log(this.items)
-
-        // console.log({
-        //     currentPage: this.currentPage,
-        //     total: this.total,
-        //     totalByPage: this.totalByPage,
-        //     totalPages: this.totalPages,
-        //     nextPage: this.nextPage,
-        //     previousPage: this.previousPage
-        // })
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -46,7 +33,8 @@ export class PaginationComponent implements OnChanges{
 
     initPagination(){
         this.min = 1
-        this.max = Math.ceil(this.total / this.totalByPage) //3
+        this.max = Math.ceil(this.total / this.totalByPage) 
+        
 
         if(this.paginateLength > this.max) {
             this.items = []
@@ -57,7 +45,7 @@ export class PaginationComponent implements OnChanges{
         else {
             this.items = [this.min, "<<", ">>", this.max]
             let index = 0 
-            let maxNewElement = this.paginateLength - this.items.length // 7 - 4 = 3
+            let maxNewElement = this.paginateLength - this.items.length 
 
             while(index < maxNewElement) {
                 let value: any;

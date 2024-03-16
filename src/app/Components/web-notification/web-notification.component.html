@@ -1,4 +1,6 @@
-<div class="alert alert-{{notification.status}}" role="alert" *ngIf="notification?.message">
-    <span class="btn-close" (click)="closeNotif(notification.id)"></span>
-    <div [innerHTML]="notification?.message"></div>
+<div class="alert-container" *ngFor="let notification of notifications">
+    <div class="alert alert-{{notification.status}}" role="alert">
+        <span class="btn-close" (click)="closeNotif(notification.id)"></span>
+        <div [innerHTML]="notification?.message"></div>
+    </div>
 </div>

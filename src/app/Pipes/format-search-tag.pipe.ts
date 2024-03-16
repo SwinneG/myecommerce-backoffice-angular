@@ -11,13 +11,8 @@ export class FormatTagPipe implements PipeTransform {
 
     if(tag) {
         if(isNaN(newValue)) {
-            // let stringValue = newValue
-           
-            //if(!stringValue.startsWith('http')) {
-                let newTag: any = tag
-                // Replace all occurrences of newTag (case insensitive) by <strong>newTag</strong>
-                newValue = value.replace(new RegExp(newTag, 'gi'), (match:any) => `<strong>${match}</strong>`)
-            //}
+            let newTag: any = tag
+            newValue = value.replace(new RegExp(newTag, 'gi'), (match:any) => `<strong>${match}</strong>`)
         }
         else {
             let newTag: any = tag
