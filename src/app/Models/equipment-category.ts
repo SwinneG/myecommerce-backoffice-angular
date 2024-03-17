@@ -1,4 +1,5 @@
 export class EquipmentCategories {
     name: string = ""
-    created: string = ""
+    createdAt: string = ''
+    updatedAt: string = ''
 }

@@ -17,6 +17,7 @@ export class EntityFormComponent {
     @Input() entity: any
 
     @Output() formEmit = new EventEmitter<any>()
+    @Output() dataChanged = new EventEmitter<any>()
 
     form: any;
     formData: any = {}
@@ -28,47 +29,54 @@ export class EntityFormComponent {
         private entityService: EntityService
     ) {}
 
-    ngOnInit() {
+    async ngOnInit() {
 
-        //FIELS WE DON'T MANAGE
+        //FIELS WE DON'T MANAGE IN ADD/EDIT FORM
         this.entityNames = this.entityNames.filter((name: string) => {
-            if(name === 'created' || name === 'user' || name === 'userId') {
+            if(name === 'createdAt' || name === 'updatedAt' || name === 'user' || name === 'userId') {
                 return false
             }
             return true
         })
 
         //DATA WITH OBJECT TYPE
-        this.objects = []
-        this.entityNames.forEach(async (name: any) => {
-            const value = this.data[name]
-
-            if(typeof value ==="object") {
-                let data: any;
+        // this.objects = []
+        const dataPromises = this.entityNames.map(async (name: any) => {
+            if(typeof this.data[name] === "object") {
+                // let data: any;
                 if(name == 'chassis'){
-                    data = await lastValueFrom(this.entityService.getDatas(name,"", 1, -1))
+                    return lastValueFrom(this.entityService.getDatas(name,"", 1, -1))
                 }
                 else if(name == "equipmentCategory") {
-                    data = await lastValueFrom(this.entityService.getDatas("equipmentCategories","",1,-1))
+                    return lastValueFrom(this.entityService.getDatas("equipmentCategories","",1,-1))
                 }
                 else if(name == 'image' || name == 'carImages'){
-                    data = await lastValueFrom(this.entityService.getDatas("carImages","",1,-1))
+                    return  lastValueFrom(this.entityService.getDatas("carImages","",1,-1))
                 }
                 else {
-                    data = await lastValueFrom(this.entityService.getDatas(name+"s","", 1, -1))
+                    return lastValueFrom(this.entityService.getDatas(name+"s","", 1, -1))
                 }
-
-                //value of associated (id) field for selected option
-                let associatedFieldValue = this.data[name + 'Id']
                 
-                let results = data.results.rows
-
-                this.objects.push({name, objects: results, associatedFieldValue})
+            }
+            else {
+                return Promise.resolve(null)
             }
         })
-        
+
+        const resultsPromises = await Promise.all(dataPromises);
+        this.objects = []
+
+        resultsPromises.forEach((result:any , index) => {
+            
+            if (result && result !==null) {
+                const name = this.entityNames[index];
+                const associatedFieldValue = this.data[name + 'Id'];
+                let results = result.results.rows
+                this.objects.push({ name, objects: results, associated: associatedFieldValue });
+            }
+        });
+
         this.initForm()
-        
 
     }
 
@@ -76,37 +84,51 @@ export class EntityFormComponent {
         let formObject = {}
         this.entityNames.forEach((name: any) => {
             const value = this.data[name]
-            formObject = {...formObject, [name]: this.fb.control(value, [Validators.required])}
+            formObject = {
+                ...formObject, 
+                [name]: this.fb.control(value, [Validators.required])
+            }
         })
         this.form = this.fb.group(formObject)
-    }
 
-    handleSubmit() {
-        const data = {...this.form.value, ...this.formData}
-        if(this.files) {
-            data["files"] = this.files
-        }
-        this.formEmit.emit({...data})
+        //change value of select with the good option
+        this.objects.forEach((object:any) => {
+            if (this.form.get(object.name)) {
+                this.form.get(object.name).setValue(object.associated);
+            }
+        });
+        
     }
 
     handleChangeObject(event: any) {
-        const {name, value} = event.target
+        const {id, value} = event.target
 
-        console.log({name, value} )
-        
         //change value of associated (id) field
-        let associatedField = name+'Id'
-        console.log(associatedField)
+        const associatedField = id+'Id'
         if(associatedField) {
-            const el = document.querySelector('#'+associatedField) as HTMLInputElement;
-            if(el) {
-                el.value = value;
-            }
+            this.data[associatedField] = Number(value); 
         }
+       
+        //update form
+        if(this.form.get(associatedField)){
+            this.form.get(associatedField).setValue(Number(value))
+        }
+
+        // console.log(this.data)
+       
     }
 
     handleChangeFile(files: any) {
         this.files = files
+    }
+
+    handleSubmit() {
+        const data = {...this.form.value, ...this.formData}
+        console.log(data)
+        if(this.files) {
+            data["files"] = this.files
+        }
+        this.formEmit.emit({...data})
     }
 
 }

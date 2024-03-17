@@ -25,6 +25,7 @@ export class DataManagerComponent implements OnDestroy{
     routes: Array<any> = routes
     actions: Array<string> = actions
     getDataById$ = new Subscription()
+    filteredEntityNames:any
 
     constructor(
         private route: ActivatedRoute,
@@ -73,6 +74,10 @@ export class DataManagerComponent implements OnDestroy{
         else if (this.action == 'add') {
             this.data = getEntity(this.entity)
         }
+
+        //filtered entitynames
+        const namesToHide = ["fuelId","extcolorId","intcolorId","transmissionId","brandId","modelId","stateId","equipmentId","equipmentCategoryId","userId",]
+        this.filteredEntityNames = this.entityNamesAll.filter((name:string) => !namesToHide.includes(name))
         
     }
 
@@ -119,8 +124,6 @@ export class DataManagerComponent implements OnDestroy{
                 .map((fileItem: any) => fileItem.oldImage)
             formData.append('deleteFiles', JSON.stringify(deleteFiles))
 
-            //console.log(...formData)
-
         }
         //CASE: without Upload files
         else {
@@ -134,10 +137,13 @@ export class DataManagerComponent implements OnDestroy{
             if(this.action === 'edit'){
                 this.entityService.updateData(this.entity, this.entityId, formData).subscribe({
                     next: (value: any) => {
-                        console.log(value)
+                        // console.log(value)
                         const message = 'update success'
                         const status = 'success'
                         this.notificationService.emitNotification({message, status})
+
+                        //redirection
+                        this.router.navigate(['/'+ this.entity])
                     },
                     error: (error: any) => {
                         const message = error

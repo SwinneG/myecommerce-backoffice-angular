@@ -1,13 +1,9 @@
 <form action="" [formGroup]="form" *ngIf="form">
     <div class="form-inline"  *ngFor="let name of entityNames">
         
-        <label [for]="name"  *ngIf="(name | formatType: data) !== 'HIDDEN_FOREIGN'">
+        <label [for]="name"  *ngIf="(name | formatType: data)">
             {{ name | formatName }} :
         </label>
-
-        <!-- <label [for]="name" class="form-hidden"  *ngIf="(name | formatType: data) === 'HIDDEN_FOREIGN'">
-            {{ name | formatName }} :
-        </label> -->
 
         <!-- {{ name | formatType: data }} -->
 
@@ -15,7 +11,6 @@
             *ngIf="(name | formatType: data) === 'INPUT'"
             class="form-control"
             type="text" 
-            [name]="name"
             [id]="name"
             [formControlName]="name" 
             [value]="name | formatFormValue: data"
@@ -25,22 +20,23 @@
             <app-image-view
                 [images]="name | formatFormValue : data"
                 (emitFile)="handleChangeFile($event)"
+                class="row"
             />
         </div>
 
         <div *ngIf="(name | formatType: data) === 'SELECT_FOREIGN'">
             <div *ngFor="let object of objects">
+               
                 <div *ngIf="name == object.name">
                     <select 
-                        [name]="name"
                         [id]="name" 
                         class="form-control form-select"
+                        [formControlName]="name"
                         (change)="handleChangeObject($event)"
                     >
                         <option 
                             *ngFor="let item of object.objects"
-                            [value]="item.id" 
-                            [selected]="object.associatedFieldValue"
+                            [value]="item.id"
                         >
                             {{item.name}}
                         </option>
@@ -52,6 +48,7 @@
         <input 
             *ngIf="(name | formatType: data) === 'HIDDEN_FOREIGN'"
             [id]="name"
+            [formControlName]="name" 
             class="form-control form-hidden"
             [value]="name | formatFormValue: data"
         >

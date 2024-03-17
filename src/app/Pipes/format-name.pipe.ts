@@ -24,11 +24,14 @@ export class FormatNamePipe implements PipeTransform {
             case 'CarImages':
                 newValue = 'Car Images';
                 break;
-            case "Created":
+            case "CreatedAt":
                 newValue = 'Created at';
                 break;
             case "User":
                 newValue = 'Created by';
+                break;
+            case "UpdatedAt":
+                newValue = 'Updated at'
                 break;
         }
         

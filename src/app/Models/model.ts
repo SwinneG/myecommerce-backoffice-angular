@@ -4,6 +4,9 @@ export class Models {
     name: string = ""
     brand: Brands = {
         name: "",
-        created: ""
+        createdAt: '',
+        updatedAt: ''
     }
+    createdAt: string = ''
+    updatedAt: string = ''
 }

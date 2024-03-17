@@ -41,12 +41,20 @@ export class PaginationComponent implements OnChanges{
             for(let index = this.min; index <= this.max; index++) {
                 this.items.push(index)
             }
+           
+            //hide pagination if just one page inside
+            let pagination;
+            if(this.items.length < 2){
+                pagination = (document.querySelector('.pagination') as HTMLInputElement).style.display="none"
+            }
+            else {
+                pagination = (document.querySelector('.pagination') as HTMLInputElement).style.display="flex"
+            }
         }
         else {
             this.items = [this.min, "<<", ">>", this.max]
             let index = 0 
             let maxNewElement = this.paginateLength - this.items.length 
-
             while(index < maxNewElement) {
                 let value: any;
     

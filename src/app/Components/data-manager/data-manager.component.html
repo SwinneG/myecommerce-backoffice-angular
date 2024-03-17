@@ -2,7 +2,7 @@
 
 <div class="entity-content" *ngIf="data">
     <ul class="list-group" *ngIf="action=='view'">
-        <li *ngFor="let name of entityNamesAll" class="list-group-item">
+        <li *ngFor="let name of filteredEntityNames" class="list-group-item">
             <strong>{{ name | formatName }}</strong>
             <div [innerHTML]="getValue(name) | formatvalue: [name, data]"></div>
         </li>

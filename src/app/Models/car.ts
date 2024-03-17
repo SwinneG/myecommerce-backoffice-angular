@@ -22,55 +22,77 @@ export class Car {
     co2: number = 0
     regular_price: number = 0
     currency: string = ""
-    created: string = ""
     fuelId: number = 1
     fuel: Fuel = {
-        name: ""
+        name: "",
+        createdAt: '',
+        updatedAt: ''
     }
     extcolorId: number = 1
     extcolor: ExtColors = {
         name: "",
-        type: ""
+        type: "",
+        createdAt: '',
+        updatedAt: ''
     }
     intcolorId: number = 1
     intcolor: IntColors = {
-        name: ""
+        name: "",
+        createdAt:'',
+        updatedAt: ''
     }
     transmissionId: number = 1
     transmission: Transmissions = {
-        name: ""
+        name: "",
+        createdAt: '',
+        updatedAt:''
     }
     brandId: number = 1
     brand: Brands = {
         name: "",
-        created: ""
+        createdAt: '',
+        updatedAt:  ''
     }
     modelId: number = 1
     model: Models = {
         name: "",
-        brand: new Brands()
+        brand: new Brands(),
+        createdAt:  '',
+        updatedAt:  ''
     }
     stateId: number = 1
     state: States = {
-        name: ""
+        name: "",
+        createdAt: '',
+        updatedAt:  ''
     }
     chassisId: number = 1
     chassis: Chassis = {
-        name: ""
+        name: "",
+        createdAt: '',
+        updatedAt: ''
     }
     equipmentId: number = 1
     equipment: Equipments = {
         name: "",
-        equipmentCategory: new EquipmentCategories()
+        equipmentCategoryId: 1,
+        equipmentCategory: new EquipmentCategories(),
+        createdAt: '',
+        updatedAt: ''
     }
     equipmentCategoryId: number = 1
     equipmentCategory : EquipmentCategories = {
         name: "",
-        created: ""
-    }
-    userId: number = 1
-    user: User ={
-        name: ""
+        createdAt: "",
+        updatedAt: ""
     }
     carImages: Array<CarImages> =  []
+    userId: number = 1
+    user: User ={
+        name: "",
+        createdAt:  '',
+        updatedAt:  ''
+    }
+    createdAt: string = ''
+    updatedAt: string = ''
 }

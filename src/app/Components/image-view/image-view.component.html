@@ -1,27 +1,24 @@
-<div class="row">
-
-    <div *ngFor="let item of files">
-        <div class="col-md-4 image-item" *ngIf="item.action !== 'DELETE'">
-            <img [src]="item.imageUrl" alt="" (click)="setImageView(item.imageUrl)" width="100%">
-            <div>
-                <button class="btn btn-success" (click)="updateImage(item.imageUrl)">Edit</button>
-                <button class="btn btn-danger" (click)="removeImage(item.imageUrl)">Delete</button>
-            </div>
+<div class="col-md-4" *ngFor="let item of files">
+    <div class="image-item" *ngIf="item.action !== 'DELETE'">
+        <img [src]="item.imageUrl" alt="" (click)="setImageView(item.imageUrl)" width="100%">
+        <div>
+            <button class="btn btn-success" (click)="updateImage(item.imageUrl)">Edit</button>
+            <button class="btn btn-danger" (click)="removeImage(item.imageUrl)">Delete</button>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <input type="file" name="file" id="file" [multiple]="true" style="display: none" (change)="addFile($event)">
-        <button class="btn btn-success" (click)="handleAddFile($event)">
-            Add image
-        </button>
-        {{errorMessage}}
-    </div>
-
-    <app-image-preview
-        *ngIf="imageUrl"
-        [srcs]="imageUrl"
-        (closeModal)="setImageView(null)"
-    />
-
 </div>
+
+<div class="col-md-12">
+    <input type="file" name="file" id="file" [multiple]="true" style="display: none" (change)="addFile($event)">
+    <button class="btn btn-success" (click)="handleAddFile($event)">
+        Add image
+    </button>
+    {{errorMessage}}
+</div>
+
+<app-image-preview
+    *ngIf="imageUrl"
+    [srcs]="imageUrl"
+    (closeModal)="setImageView(null)"
+/>
+

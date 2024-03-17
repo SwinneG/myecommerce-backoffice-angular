@@ -1,4 +1,5 @@
 export class Brands {
     name: string = ""
-    created: string = ""
+    createdAt: string = ''
+    updatedAt: string = ''
 }

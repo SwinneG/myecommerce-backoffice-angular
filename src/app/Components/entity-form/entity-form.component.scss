@@ -1,3 +1,6 @@
 .form-hidden {
-    display: none
+    display: none 
+}
+.form-inline:has( > .form-hidden) label{
+    display: none;
 }

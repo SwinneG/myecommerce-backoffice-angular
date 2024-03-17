@@ -15,7 +15,9 @@ export class FormatvaluePipe implements PipeTransform {
   transform(value: any, args: Array<any>): unknown {
 
     let newValue = value
+    // console.log(newValue)
     let name = args[0]
+    // console.log(name)
     const url = this.route.snapshot.url
     const imageUrlBase = environment.apiUrl
 
@@ -54,10 +56,12 @@ export class FormatvaluePipe implements PipeTransform {
         }
     }
 
-    if(name == 'created') {
+    if(name == 'createdAt' || name == 'updatedAt') {
         let obj = value
-        const formattedDate = obj.split('T')[0];
-        newValue = formattedDate
+        let date = obj.split('T')[0];
+        let hourAndGMT = obj.split('T')[1];
+        let hour = hourAndGMT.split('.')[0]
+        newValue = date + ' ' + hour
     }
 
     return newValue;
