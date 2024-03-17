@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { generateId } from 'src/app/Helpers/helpers';
+import { generateId } from 'src/app/backoffice/Helpers/helpers';
 
 @Component({
   selector: 'app-option-form',

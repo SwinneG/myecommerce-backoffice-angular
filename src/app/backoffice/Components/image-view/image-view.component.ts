@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { isImage } from 'src/app/Helpers/utils';
+import { isImage } from 'src/app/backoffice/Helpers/utils';
 import { environment } from 'src/environments/environment';
 
 @Component({

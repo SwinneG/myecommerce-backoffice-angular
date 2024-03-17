@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { routes } from 'src/app/Helpers/route'
+import { routes } from 'src/app/backoffice/Helpers/route'
 
 @Component({
   selector: 'app-menu',

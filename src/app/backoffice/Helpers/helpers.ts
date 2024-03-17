@@ -1,14 +1,14 @@
-import { Brands } from '../Models/brand';
-import { Car } from '../Models/car';
-import { Chassis } from '../Models/chassis';
-import { Equipments } from '../Models/equipment';
-import { EquipmentCategories } from '../Models/equipment-category';
-import { ExtColors } from '../Models/ext-color';
-import { Fuel } from '../Models/fuel'
-import { IntColors } from '../Models/int-color';
-import { Models } from '../Models/model';
-import { States } from '../Models/state';
-import { Transmissions } from '../Models/transmission';
+import { Brands } from '../../shared/Models/brand';
+import { Car } from '../../shared/Models/car';
+import { Chassis } from '../../shared/Models/chassis';
+import { Equipments } from '../../shared/Models/equipment';
+import { EquipmentCategories } from '../../shared/Models/equipment-category';
+import { ExtColors } from '../../shared/Models/ext-color';
+import { Fuel } from '../../shared/Models/fuel'
+import { IntColors } from '../../shared/Models/int-color';
+import { Models } from '../../shared/Models/model';
+import { States } from '../../shared/Models/state';
+import { Transmissions } from '../../shared/Models/transmission';
 
 export const getEntityProperties = (entity: string): Array<string> => {
     

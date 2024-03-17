@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { generateId } from 'src/app/Helpers/helpers';
-import { NotificationModel } from 'src/app/Models/notification-model';
-import { WebNotificationService } from 'src/app/Services/web-notification.service';
+import { generateId } from 'src/app/backoffice/Helpers/helpers';
+import { NotificationModel } from 'src/app/shared/Models/notification-model';
+import { WebNotificationService } from 'src/app/backoffice/Services/web-notification.service';
 
 @Component({
   selector: 'app-web-notification',

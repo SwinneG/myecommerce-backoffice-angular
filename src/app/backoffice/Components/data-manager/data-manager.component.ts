@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { actions } from 'src/app/Helpers/actions';
-import { getEntity, getEntityProperties } from 'src/app/Helpers/helpers';
-import { routes } from 'src/app/Helpers/route';
-import { formatToCamelCase } from 'src/app/Helpers/utils';
-import { EntityService } from 'src/app/Services/entity.service';
-import { WebNotificationService } from 'src/app/Services/web-notification.service';
+import { actions } from 'src/app/backoffice/Helpers/actions';
+import { getEntity, getEntityProperties } from 'src/app/backoffice/Helpers/helpers';
+import { routes } from 'src/app/backoffice/Helpers/route';
+import { formatToCamelCase } from 'src/app/backoffice/Helpers/utils';
+import { EntityService } from 'src/app/shared/Services/entity.service';
+import { WebNotificationService } from 'src/app/backoffice/Services/web-notification.service';
 
 @Component({
   selector: 'app-data-manager',

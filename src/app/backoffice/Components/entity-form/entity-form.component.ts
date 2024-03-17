@@ -2,7 +2,7 @@ import { compileDeclareNgModuleFromMetadata, compileNgModule } from '@angular/co
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
-import { EntityService } from 'src/app/Services/entity.service';
+import { EntityService } from 'src/app/shared/Services/entity.service';
 
 @Component({
   selector: 'app-entity-form',

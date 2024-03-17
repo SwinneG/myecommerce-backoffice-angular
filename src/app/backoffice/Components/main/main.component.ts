@@ -1,10 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { getEntityProperties } from 'src/app/Helpers/helpers';
-import { EntityService } from 'src/app/Services/entity.service';
+import { getEntityProperties } from 'src/app/backoffice/Helpers/helpers';
+import { EntityService } from 'src/app/shared/Services/entity.service';
 import { faEye, faEdit, faTrash, faPlus, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
-import { routes } from 'src/app/Helpers/route'
-import { Subscription, forkJoin, lastValueFrom, map, mergeMap } from 'rxjs';
+import { routes } from 'src/app/backoffice/Helpers/route'
+import { Subscription, lastValueFrom, } from 'rxjs';
 import { environment } from 'src/environments/environment';
  
 @Component({
