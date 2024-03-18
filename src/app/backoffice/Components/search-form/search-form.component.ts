@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search-form',
@@ -12,8 +11,6 @@ export class SearchFormComponent {
     @Output() newValue = new EventEmitter<any>()
 
     value: string=""
-
-    faMagnifyingGlass = faMagnifyingGlass
 
     constructor() {}
 

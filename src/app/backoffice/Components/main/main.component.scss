@@ -1,0 +1,17 @@
+.main {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__title {
+        font-weight: 700;
+        font-family: var(--bo_headingFont);
+        flex: 0 0 50%;
+    }
+    &__search {
+        flex: 0 0 50%;
+    }
+    &__datas {
+        border: 1px solid green;
+        flex: 0 0 100%;
+    }
+}

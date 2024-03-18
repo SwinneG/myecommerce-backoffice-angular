@@ -24,7 +24,6 @@ import { FormatvaluePipe } from './Pipes/formatvalue.pipe';
 import { FormatFormValuePipe } from './Pipes/format-form-value.pipe';
 import { FormatTypePipe } from './Pipes/format-type.pipe';
 import { RouterModule, Routes } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BackofficeComponent } from './backoffice.component';
 
 const routes: Routes = [
@@ -118,7 +117,6 @@ const routes: Routes = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     RouterModule.forRoot(routes),
   ],
   exports: [RouterModule],

@@ -1,7 +1,7 @@
-<nav>
-    <ul>
-        <li *ngFor="let route of routes">
-            <a [routerLink]="['/admin/', route.path]" routerLinkActive="active">
+<nav class="mainNav">
+    <ul class="mainNav__list">
+        <li *ngFor="let route of routes" class="mainNav__item">
+            <a [routerLink]="['/admin/', route.path]" routerLinkActive="active" class="mainNav__link">
                 {{ route.name }}
             </a>
         </li>

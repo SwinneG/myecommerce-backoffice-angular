@@ -1,14 +1,16 @@
-<form action="" class="d-flex" (submit)="handleSubmit($event)">
-    <input 
-        type="search"
-        class="form-control"
-        [name]="name"
-        [(ngModel)]="value"
-        (search)="handleSubmit($event)"
-        placeholder="Your search..."
-        aria-label="search"
-    />
-    <button class="btn btn-success">
-        <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
-    </button>
-</form>
+<div class="searchForm">
+    <form class="searchForm__form" action="" (submit)="handleSubmit($event)">
+        <input 
+            type="search"
+            class="form-control searchForm__input"
+            [name]="name"
+            [(ngModel)]="value"
+            (search)="handleSubmit($event)"
+            placeholder="Your search..."
+            aria-label="search"
+        />
+        <button class="btn btn-success searchForm__btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </form>
+</div>

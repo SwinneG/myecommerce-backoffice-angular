@@ -1,13 +1,11 @@
-
-
 <main class="main">
-    <h1>All {{ pageName }}</h1>
-    <!-- {{ datas | json }} -->
 
+    <!-- {{ datas | json }} -->
     <app-loading *ngIf="isLoading"/>
 
-    <div *ngIf="!isLoading">
-        
+    <h2 class="main__title">All {{ pageName }}</h2>
+    
+    <div class="main__search" *ngIf="!isLoading">
         <app-search-form
             *ngIf="datas.length || query"
             [name]="entityNames[0]"
@@ -16,8 +14,11 @@
         <div *ngIf="query">
             {{ datas.length }} Search result(s) with the keyword: <strong>{{ searchTag }}</strong>
         </div>
+    </div>
 
-        <div class="table-container"  *ngIf="result?.total">
+    <ng-container *ngIf="!isLoading">
+
+        <div class="main__datas" *ngIf="result?.total">
 
             <p *ngIf="result?.total > 1">
                 <strong>{{ result?.total }}</strong> datas found
@@ -31,15 +32,15 @@
                 'justify-content-between': group.length
             }">
                 <a class="btn btn-danger" *ngIf="group.length" (click)="handleDelete(null)">
-                    <fa-icon [icon]="faTrash"></fa-icon>
+                    <i class="fa-solid fa-trash"></i>
                     Delete {{ group.length }} item(s)
                 </a>
                 <a class="btn btn-success" [routerLink]="['/', entity, 'add']">
-                    <fa-icon [icon]="faPlus"></fa-icon>
+                    <i class="fa-solid fa-plus"></i>
                     Add New
                 </a>
                 <button class="btn btn-success" (click)="setDisplaySelectionBox()">
-                    <fa-icon [icon]="faLayerGroup"></fa-icon>
+                    <i class="fa-solid fa-layer-group"></i>
                 </button>
                 <div class="entityNames" *ngIf="displaySelectionBox">
                     <ul>
@@ -96,13 +97,13 @@
                         </td>
                         <td>
                             <a [routerLink]="[data.id, 'view']" class="btn btn-success m-1">
-                                <fa-icon [icon]="faEye"></fa-icon>
+                                <i class="fa-solid fa-eye"></i>
                             </a>
                             <a [routerLink]="[data.id, 'edit']" class="btn btn-primary m-1">
-                                <fa-icon [icon]="faEdit"></fa-icon>
+                                <i class="fa-solid fa-edit"></i>
                             </a>
                             <a class="btn btn-danger m-1" (click)="handleDelete(data)">
-                                <fa-icon [icon]="faTrash"></fa-icon>
+                                <i class="fa-solid fa-trash"></i>
                             </a>
                         </td>
                     </tr>
@@ -145,11 +146,11 @@
                 No data available
             </p>
             <a class="btn btn-success" routerlink="add">
-                <fa-icon [icon]="faPlus"></fa-icon>
+                <i class="fa-solid fa-plus"></i>
                 Add
             </a>
         </div>
-    </div>
+    </ng-container>
 
     <app-modal
         *ngIf="isDeleting"

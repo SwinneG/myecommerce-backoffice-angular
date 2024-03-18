@@ -1,11 +1,33 @@
-<app-header/>
-<div class="row page-container">
-    <div class="aside col-md-2">
+<div class="backoffice">
+    
+    <aside class="aside">
+        <div class="logo">
+            <a [routerLink]="['/', 'admin']">
+                <img src="../../assets/sg__logo--white.svg" width="50" height="66">
+            </a>
+        </div>
+        <div class="userHello">
+            <div class="userHello__img">
+                <img src="../../assets/gs.jpg" width="90" height="90">
+            </div>
+            <p class="userHello__txt">Hi, Gaël</p>
+            <a class="userHello__logout" href="#">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
         <app-menu/>
-    </div>
-    <div class="page-content col-md-10">
+        <app-footer/>
+    </aside>
+    
+    <main class="main">
+        <app-header/>
         <router-outlet/>
-    </div>
-    <app-web-notification/>
+        <app-web-notification/>
+    </main>
+
 </div>
-<app-footer/>
+
+
+
+
+

@@ -23,7 +23,7 @@ import { AppComponent } from './app.component';
 
     BackofficeModule,
     FrontendModule,
-    AppRoutingModule,//warning : must be after back et front module for correct routing
+    AppRoutingModule, //warning: MUST be after back et front module for correct routing
   ],
   providers: [],
   bootstrap: [AppComponent]

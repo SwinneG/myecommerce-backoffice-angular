@@ -1,0 +1,16 @@
+.header {
+    margin-bottom: 50px;
+    
+    h1 {
+        font-weight: 700;
+        font-family: var(--bo_headingFont);
+        
+        &:after {
+            content: "";
+            display: block;
+            background-color: var(--bo_underlineTextColor);
+            height: 5px;
+            width: 53%;
+        }
+    }
+}

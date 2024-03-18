@@ -1,0 +1,21 @@
+.searchForm {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+    
+    &__form {
+        flex: 0 0 100%;
+        display: flex;
+    }
+    &__input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    &__btn {
+        background-color: var(--bo_primaryBtnBackgroundColor);
+        color: var(--bo_primaryBtnTextColor);
+        border: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
