@@ -1,0 +1,20 @@
+.pagination {
+    display: flex;
+    margin: 0;
+
+    .page-item {
+
+        .page-link {
+            color: var(--bo_linkColor);
+        }
+
+        &.active {
+
+            .page-link {
+                background-color: var(--bo_primaryBtnBackgroundColor);
+                color: var(--bo_primaryBtnTextColor);
+                border: none;
+            }
+        }
+    }
+}

@@ -1,12 +1,12 @@
 <h2>{{ pageName }}</h2>
 
-<div class="entity-content" *ngIf="data">
-    <ul class="list-group" *ngIf="action=='view'">
-        <li *ngFor="let name of filteredEntityNames" class="list-group-item">
+<div *ngIf="data">
+    <div *ngIf="action=='view'">
+        <div *ngFor="let name of filteredEntityNames">
             <strong>{{ name | formatName }}</strong>
             <div [innerHTML]="getValue(name) | formatvalue: [name, data]"></div>
-        </li>
-    </ul>
+        </div>
+    </div>
 
     <app-entity-form
         *ngIf="action=='edit' || action=='add'"

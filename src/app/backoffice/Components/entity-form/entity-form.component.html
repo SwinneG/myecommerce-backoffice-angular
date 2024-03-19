@@ -1,4 +1,4 @@
-<form action="" [formGroup]="form" *ngIf="form">
+<form action="" [formGroup]="form" *ngIf="form" class="entityForm">
     <div class="form-inline"  *ngFor="let name of entityNames">
         
         <label [for]="name"  *ngIf="(name | formatType: data)">
@@ -20,7 +20,7 @@
             <app-image-view
                 [images]="name | formatFormValue : data"
                 (emitFile)="handleChangeFile($event)"
-                class="row"
+                class="imagesGroup"
             />
         </div>
 
@@ -56,7 +56,7 @@
 
     </div>
 
-    <div class="action">
+    <div class="entityForm__actions">
         <a class="btn btn-danger" [routerLink]="['/', entity]">
             Cancel
         </a>

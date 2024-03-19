@@ -1,6 +1,5 @@
 <main class="main">
 
-    <!-- {{ datas | json }} -->
     <app-loading *ngIf="isLoading"/>
 
     <h2 class="main__title">All {{ pageName }}</h2>
@@ -20,43 +19,43 @@
 
         <div class="main__datas" *ngIf="result?.total">
 
-            <p *ngIf="result?.total > 1">
-                <strong>{{ result?.total }}</strong> datas found
-            </p>
-            <p *ngIf="result?.total === 1">
-                <strong>{{ result?.total }}</strong> data found
-            </p>
-
-            <div class="d-flex justify-content-end" [ngClass]="{
-                'justify-content-end': !group.length,
-                'justify-content-between': group.length
-            }">
-                <a class="btn btn-danger" *ngIf="group.length" (click)="handleDelete(null)">
-                    <i class="fa-solid fa-trash"></i>
-                    Delete {{ group.length }} item(s)
-                </a>
-                <a class="btn btn-success" [routerLink]="['/', entity, 'add']">
-                    <i class="fa-solid fa-plus"></i>
-                    Add New
-                </a>
-                <button class="btn btn-success" (click)="setDisplaySelectionBox()">
-                    <i class="fa-solid fa-layer-group"></i>
-                </button>
-                <div class="entityNames" *ngIf="displaySelectionBox">
-                    <ul>
-                        <li *ngFor="let entityName of entityNamesAll; let first = first">
-                            <input 
-                                type="checkbox" 
-                                class="form-check-input" 
-                                [checked]="first || entityNames.includes(entityName)"
-                                [disabled]="first"
-                                (change)="setEntityNames($event, entityName)"
-                                name="" 
-                                id=""
-                            />
-                            {{ entityName | formatName }}
-                        </li>
-                    </ul>
+            <div class="main__datas__intro">
+                
+                <p *ngIf="result?.total > 1">
+                    <strong>{{ result?.total }}</strong> datas found
+                </p>
+                <p *ngIf="result?.total === 1">
+                    <strong>{{ result?.total }}</strong> data found
+                </p>
+    
+                <div class="btns">
+                    <a class="btn btn-danger" *ngIf="group.length" (click)="handleDelete(null)">
+                        <i class="fa-solid fa-trash"></i>
+                        Delete {{ group.length }} item(s)
+                    </a>
+                    <a class="btn btn-success" [routerLink]="['/', entity, 'add']">
+                        <i class="fa-solid fa-plus"></i>
+                        Add New
+                    </a>
+                    <button class="btn btn-success" (click)="setDisplaySelectionBox()">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </button>
+                    <div class="entityNames" *ngIf="displaySelectionBox">
+                        <ul>
+                            <li *ngFor="let entityName of entityNamesAll; let first = first">
+                                <input 
+                                    type="checkbox" 
+                                    class="form-check-input" 
+                                    [checked]="first || entityNames.includes(entityName)"
+                                    [disabled]="first"
+                                    (change)="setEntityNames($event, entityName)"
+                                    name="" 
+                                    id=""
+                                />
+                                {{ entityName | formatName }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -110,36 +109,35 @@
                 </tbody>
             </table>
 
-            <app-image-preview
-                *ngIf="images"
-                [srcs]="images"
-                (closeModal)="setImageView(null, null)"
-            />
+            <div class="main__datas__controls">
 
-            <div class="d-flex justify-content-end" *ngIf="pageLimit !==-1">
-                <div class="item-per-page">
-                    Item per Page
-                    <select name="pageLimit" id="pageLimit" (change)="setPageLimit($event)">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="100">100</option>
-                    </select>
+                <app-pagination
+                    *ngIf="datas.length && pageLimit !==-1"
+                    [currentPage]="result.currentPage"
+                    [total]="result.total"
+                    [nextPage]="result.nextPage"
+                    [previousPage]="result.previousPage"
+                    [totalByPage]="pageLimit" 
+                    [totalPages]="result.totalPages"
+                    (pageSelected)="setPage($event)"
+                />
+
+                <div *ngIf="pageLimit !==-1">
+                    <div class="item-per-page">
+                        Item per Page
+                        <select name="pageLimit" id="pageLimit" (change)="setPageLimit($event)">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
                 </div>
+
             </div>
 
-            <app-pagination
-                *ngIf="datas.length && pageLimit !==-1"
-                [currentPage]="result.currentPage"
-                [total]="result.total"
-                [nextPage]="result.nextPage"
-                [previousPage]="result.previousPage"
-                [totalByPage]="pageLimit" 
-                [totalPages]="result.totalPages"
-                (pageSelected)="setPage($event)"
-            />
-        </div>
+        </div>   
 
         <div *ngIf="!datas.length && !query">
             <p>
@@ -150,7 +148,14 @@
                 Add
             </a>
         </div>
+
     </ng-container>
+
+    <app-image-preview
+        *ngIf="images"
+        [srcs]="images"
+        (closeModal)="setImageView(null, null)"
+    />
 
     <app-modal
         *ngIf="isDeleting"
