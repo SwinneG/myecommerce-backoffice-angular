@@ -90,7 +90,7 @@
                         </td>
                         <td scope="row">
                             {{ result?.total - ((result.currentPage-1)*pageLimit) - index }}
-                        </td> 
+                        </td>
                         <td *ngFor="let name of entityNames" (click)="setImageView(name, data)">
                             <div [innerHTML]="getValue(data, name) | formatTag: searchTag | formatvalue: [name, data]"></div>
                         </td>

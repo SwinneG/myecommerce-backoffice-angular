@@ -72,20 +72,20 @@ export class Car {
         createdAt: '',
         updatedAt: ''
     }
-    equipmentId: number = 1
-    equipment: Equipments = {
-        name: "",
-        equipmentCategoryId: 1,
-        equipmentCategory: new EquipmentCategories(),
-        createdAt: '',
-        updatedAt: ''
-    }
-    equipmentCategoryId: number = 1
-    equipmentCategory : EquipmentCategories = {
-        name: "",
-        createdAt: "",
-        updatedAt: ""
-    }
+    // equipmentId: number = 1
+    // equipment: Equipments = {
+    //     name: "",
+    //     equipmentCategoryId: 1,
+    //     equipmentCategory: new EquipmentCategories(),
+    //     createdAt: '',
+    //     updatedAt: ''
+    // }
+    // equipmentCategoryId: number = 1
+    // equipmentCategory : EquipmentCategories = {
+    //     name: "",
+    //     createdAt: "",
+    //     updatedAt: ""
+    // }
     carImages: Array<CarImages> =  []
     userId: number = 1
     user: User ={
@@ -93,6 +93,7 @@ export class Car {
         createdAt:  '',
         updatedAt:  ''
     }
+    equipments: Array<Equipments> =  []
     createdAt: string = ''
     updatedAt: string = ''
 }

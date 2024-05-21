@@ -26,7 +26,6 @@
 
         <div *ngIf="(name | formatType: data) === 'SELECT_FOREIGN'">
             <div *ngFor="let object of objects">
-               
                 <div *ngIf="name == object.name">
                     <select 
                         [id]="name" 
@@ -43,6 +42,46 @@
                     </select>
                 </div>
              </div>
+        </div>
+
+        <div *ngIf="(name | formatType: data) === 'CHECKBOX'">
+           
+            
+            <div *ngFor="let object of objects">
+                
+                <div *ngIf="name == object.name">
+
+                    <!-- <pre>{{object.associated | json}}</pre> -->
+
+                    <div *ngFor="let item of object.objects" class="form-check">
+                        <!-- <pre>{{item.id | json}}</pre> -->
+                        <input 
+                            *ngIf="object?.associated?.includes(item.id)"
+                            type="checkbox" 
+                            [name]="item.name.toLowerCase().replace(' ','_')"
+                            class="form-check-input"
+                            [id]="item.name.toLowerCase().replace(' ','_')  + '|' + item.id"
+                            checked
+                            (change)="handleChangeObject($event)"
+                        />
+                        <input 
+                            *ngIf="!object?.associated?.includes(item.id)"
+                            type="checkbox" 
+                            [name]="item.name.toLowerCase().replace(' ','_')"
+                            class="form-check-input"
+                            [id]="item.name.toLowerCase().replace(' ','_')  + '|' +  item.id"
+                            (change)="handleChangeObject($event)"
+                           
+                        />
+                        <label 
+                            class="form-check-label"
+                            [for]="item.name.toLowerCase().replace(' ','_') + '|' +  item.id"
+                        >
+                            {{item.name}}
+                        </label> 
+                    </div>
+                </div>
+            </div>
         </div>
    
         <input 

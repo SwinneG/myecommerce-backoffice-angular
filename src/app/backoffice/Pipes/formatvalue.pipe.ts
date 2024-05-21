@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Pipe({
@@ -12,21 +12,25 @@ export class FormatvaluePipe implements PipeTransform {
         private route: ActivatedRoute
     ) {}
 
-  transform(value: any, args: Array<any>): unknown {
+    
 
+  transform(value: any, args: Array<any>): unknown {
+    console.log(args)
     let newValue = value
-    // console.log(newValue)
+    console.log(newValue)
     let name = args[0]
     // console.log(name)
-    const url = this.route.snapshot.url
+    let url = this.route.snapshot.url
     const imageUrlBase = environment.apiUrl
 
     let action =""
-    if(url[2]){ //view
+    if(url != undefined && url[2]){ //view
         action = url[2]?.path
     }
+
+    // console.log(name)
     
-    if(name == 'fuel' || name == 'extcolor' || name == 'intcolor' || name == 'transmission' || name == 'brand' || name == 'model' || name == 'state' || name == 'chassis' || name == 'equipment' || name == 'equipmentCategory') {
+    if(name == 'fuel' || name == 'extcolor' || name == 'intcolor' || name == 'transmission' || name == 'brand' || name == 'model' || name == 'state' || name == 'chassis' || name == 'equipmentCategory') {
         const obj = value;
         newValue = obj.name
     }
@@ -42,10 +46,11 @@ export class FormatvaluePipe implements PipeTransform {
     }
 
     if(name == 'carImages') {
+        console.log(value)
         let obj = value
         if(action=="view"){
             newValue = []
-            obj.forEach((element:any) => {
+            obj?.forEach((element:any) => {
                 newValue.push(`<img src='${imageUrlBase + element.image}' width='50'>`)
             });
         }
@@ -54,6 +59,15 @@ export class FormatvaluePipe implements PipeTransform {
                 newValue= `<img src='${imageUrlBase + obj[0]?.image}' width='50'>`
             }
         }
+    }
+
+    if(name == 'equipments') {
+        let obj = value
+        //console.log(obj)
+        newValue = []
+        obj?.forEach((element:any) => {
+            newValue.push(element.name)
+        });
     }
 
     if(name == 'createdAt' || name == 'updatedAt') {

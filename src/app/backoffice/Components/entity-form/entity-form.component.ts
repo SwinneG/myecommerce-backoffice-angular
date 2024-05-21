@@ -1,6 +1,5 @@
-import { compileDeclareNgModuleFromMetadata, compileNgModule } from '@angular/compiler';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 import { EntityService } from 'src/app/shared/Services/entity.service';
 
@@ -23,6 +22,7 @@ export class EntityFormComponent {
     formData: any = {}
     files: any
     objects: any
+    checkboxGroup: any
 
     constructor(
         private fb: FormBuilder,
@@ -39,12 +39,11 @@ export class EntityFormComponent {
             return true
         })
 
-        //DATA WITH OBJECT TYPE
-        // this.objects = []
+        //GET DATAS WITH OBJECT TYPE
         const dataPromises = this.entityNames.map(async (name: any) => {
             if(typeof this.data[name] === "object") {
-                // let data: any;
-                if(name == 'chassis'){
+               
+                if(name == 'chassis' || name == 'equipments'){
                     return lastValueFrom(this.entityService.getDatas(name,"", 1, -1))
                 }
                 else if(name == "equipmentCategory") {
@@ -62,19 +61,32 @@ export class EntityFormComponent {
                 return Promise.resolve(null)
             }
         })
-
+        
         const resultsPromises = await Promise.all(dataPromises);
-        this.objects = []
+        this.objects = [] // todo: rename to personnalizationElements
 
         resultsPromises.forEach((result:any , index) => {
-            
-            if (result && result !==null) {
+            if (result && result !== null) {
                 const name = this.entityNames[index];
-                const associatedFieldValue = this.data[name + 'Id'];
                 let results = result.results.rows
-                this.objects.push({ name, objects: results, associated: associatedFieldValue });
+
+               if(name=='equipments'){//for checkboxes
+                    const associatedFieldValues:any = []
+                    results.map((result:any) => {
+                        if(result.cars.length !== 0) {
+                            associatedFieldValues.push(result.id)
+                        }
+                    })
+                    this.objects.push({ name, objects: results, associated: associatedFieldValues});
+                }
+                else{
+                    const associatedFieldValue = this.data[name + 'Id'];
+                    this.objects.push({ name, objects: results, associated: associatedFieldValue }); 
+                }
+               
             }
         });
+
 
         this.initForm()
 
@@ -84,17 +96,23 @@ export class EntityFormComponent {
         let formObject = {}
         this.entityNames.forEach((name: any) => {
             const value = this.data[name]
+
             formObject = {
                 ...formObject, 
                 [name]: this.fb.control(value, [Validators.required])
-            }
+            }  
         })
         this.form = this.fb.group(formObject)
 
-        //change value of select with the good option
+        //change value of selects/checkboxes with the good option(s)
         this.objects.forEach((object:any) => {
             if (this.form.get(object.name)) {
-                this.form.get(object.name).setValue(object.associated);
+                if(object.name=="equipments"){//for checkboxes
+                 
+                }
+                else {//for selects
+                    this.form.get(object.name).setValue(object.associated);
+                }
             }
         });
         
@@ -103,18 +121,31 @@ export class EntityFormComponent {
     handleChangeObject(event: any) {
         const {id, value} = event.target
 
-        //change value of associated (id) field
-        const associatedField = id+'Id'
-        if(associatedField) {
-            this.data[associatedField] = Number(value); 
-        }
-       
-        //update form
-        if(this.form.get(associatedField)){
-            this.form.get(associatedField).setValue(Number(value))
+        if(event.target.classList.length > 0){
+            event.target.classList.forEach((el:any) => {
+                // console.log(el)
+                if(el === 'form-select'){
+                    //change value of associated (id) field
+                    const associatedField = id+'Id'
+                    if(associatedField) {
+                        this.data[associatedField] = Number(value); 
+                    }
+                
+                    //update form
+                    if(this.form.get(associatedField)){
+                        this.form.get(associatedField).setValue(Number(value))
+                    }
+                }
+                if(el === 'form-check-input'){
+                    const idEquipment = Number(event.srcElement.id.split('|').slice(-1))
+                    // console.log(idEquipment)
+                    // console.log(this.data['equipments'])
+                    this.data['equipments'].push(idEquipment)
+                }
+            });
         }
 
-        // console.log(this.data)
+       
        
     }
 
@@ -124,7 +155,6 @@ export class EntityFormComponent {
 
     handleSubmit() {
         const data = {...this.form.value, ...this.formData}
-        console.log(data)
         if(this.files) {
             data["files"] = this.files
         }

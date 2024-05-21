@@ -59,9 +59,9 @@ export class MainComponent implements OnDestroy{
          }
          
         this.entityNamesAll = getEntityProperties(this.entity)
-        //remove this fields
+        //remove these fields
         this.entityNamesAll.map((element, index) => {
-            if(element == 'fuelId' || element == 'extcolorId' || element=='intcolorId' || element=='transmissionId' || element=='brandId' || element=='modelId' || element=='stateId' || element=='chassisId' || element=='equipmentId' || element=='equipmentCategoryId' || element=='userId') {
+            if(element == 'fuelId' || element == 'extcolorId' || element=='intcolorId' || element=='transmissionId' || element=='brandId' || element=='modelId' || element=='stateId' || element=='chassisId' /*|| element=='equipmentId' || element=='equipmentCategoryId'*/ || element=='userId') {
                 this.entityNamesAll.splice(index,1)
             }
         });
@@ -114,9 +114,10 @@ export class MainComponent implements OnDestroy{
 
                   
                     this.datas = results?.rows
-
                     this.total = data.total
                     this.result = data
+
+                    //console.log(data.results.rows)
                   
                 } 
             },
