@@ -136,7 +136,7 @@ export class DataManagerComponent implements OnDestroy{
         if(formData) {
             if(this.action === 'edit'){
                 
-                if(formData.equipments.length > 0){
+                if(formData?.equipments?.length > 0){
                     
                     formData.equipments.forEach((element:any) => {
 
