@@ -123,7 +123,7 @@ export class EntityFormComponent {
 
         if(event.target.classList.length > 0){
             event.target.classList.forEach((el:any) => {
-                // console.log(el)
+                 
                 if(el === 'form-select'){
                     //change value of associated (id) field
                     const associatedField = id+'Id'
@@ -140,13 +140,13 @@ export class EntityFormComponent {
                     const idEquipment = Number(event.srcElement.id.split('|').slice(-1))
                     // console.log(idEquipment)
                     // console.log(this.data['equipments'])
-                    this.data['equipments'].push(idEquipment)
+                    // console.log(event.target.checked);
+                    let checkedOrNot = event.target.checked;
+                    this.data['equipments'].push({idEquipment,checkedOrNot })
                 }
             });
         }
-
-       
-       
+        
     }
 
     handleChangeFile(files: any) {

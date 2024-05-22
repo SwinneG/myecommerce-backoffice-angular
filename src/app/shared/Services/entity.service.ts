@@ -29,12 +29,16 @@ export class EntityService {
     return this.http.put(environment.apiUrl+entityName+'/'+entityId, data).pipe(catchError(this.handleError))
   }
 
-  updateDataCarEquipment(entityName: string, carId: number, equipmentId: number, data: any) {
-    return this.http.put(environment.apiUrl+entityName+'/'+carId+'/'+equipmentId, data).pipe(catchError(this.handleError))
-  }
+//   updateDataCarEquipment(entityName: string, carId: number, equipmentId: number, data: any) {
+//     return this.http.put(environment.apiUrl+entityName+'/'+carId+'/'+equipmentId, data).pipe(catchError(this.handleError))
+//   }
 
   deleteData(entityName: string, entityId: number) {
     return this.http.delete(environment.apiUrl+entityName+'/'+entityId)
+  }
+
+  deleteDataCarEquipment(entityName: string, carId: number, equipmentId: number){
+    return this.http.delete(environment.apiUrl+entityName+'/'+carId+'/'+equipmentId);
   }
 
   private handleError(error: HttpErrorResponse) {

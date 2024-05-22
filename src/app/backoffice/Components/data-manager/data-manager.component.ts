@@ -139,42 +139,59 @@ export class DataManagerComponent implements OnDestroy{
                 if(formData.equipments.length > 0){
                     
                     formData.equipments.forEach((element:any) => {
-                        // console.log(element)
-                        // console.log(this.entityId)
-                        // console.log(element.id)
 
-                        let id;
-                        if(element.id){
-                            id = element.id
-                        } else {
-                            id = element
-                        }
-
-                        //TODO checker si la carId a déjà l'équipement ajouté
-                        // si oui, tu updates en unchecked
-                        // si non tu add dans la DB et tu checked
-
-                        // ADD CAR EQUIPMENT
-                        this.entityService.addData('carEquipments', {
-                            carId: this.entityId,
-                            equipmentId: id
-                        }).subscribe({
-                            next: (value: any) => {
-                                console.log(value)
-                                const message = 'add success'
-                                const status = 'success'
-                                this.notificationService.emitNotification({message, status})
-        
-                                // //redirection
-                                this.router.navigate(['/'+ this.entity])
-                            },
-                            error: (error: any) => {
-                                const message = error
-                                const status = 'danger'
-                                this.notificationService.emitNotification({message, status})
+                        if(element.hasOwnProperty('checkedOrNot')) {
+                            let id;
+                            if(element.idEquipment){
+                                id = element.idEquipment
+                            } else {
+                                id = element
                             }
-                        })
-                        
+    
+                            if(element.checkedOrNot == true){
+                                // ADD CAR EQUIPMENT
+                                this.entityService.addData('carEquipments', {
+                                    carId: this.entityId,
+                                    equipmentId: id
+                                }).subscribe({
+                                    next: (value: any) => {
+                                        console.log(value)
+                                       // const message = 'add success'
+                                        //const status = 'success'
+                                        //this.notificationService.emitNotification({message, status})
+                
+                                        //redirection
+                                        //this.router.navigate(['/'+ this.entity])
+                                    },
+                                    error: (error: any) => {
+                                        //const message = error
+                                        //const status = 'danger'
+                                        //this.notificationService.emitNotification({message, status})
+                                    }
+                                })
+    
+                            }
+                            else{
+                                //DELETE CAR EQUIPMENTS
+                                this.entityService.deleteDataCarEquipment('carEquipments', this.entityId, id).subscribe({
+                                    next: (value: any) => {
+                                        console.log(value)
+                                        // const message = 'remove success'
+                                        // const status = 'success'
+                                        // this.notificationService.emitNotification({message, status})
+                
+                                        //redirection
+                                        // this.router.navigate(['/'+ this.entity])
+                                    },
+                                    error: (error: any) => {
+                                        // const message = error
+                                        // const status = 'danger'
+                                        // this.notificationService.emitNotification({message, status})
+                                    }
+                                })
+    
+                            }
+                        }
                         //UPDATE CAR EQUIPMENTS
                        /* this.entityService.updateDataCarEquipment("carEquipments", this.entityId, element.id,{equipmentId:element.id, carId: this.entityId}).subscribe({
                             next: (value: any) => {
